@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../CSS/styles.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+			rel="stylesheet"
+		/>
+		<title>Météo</title>
+	</head>
+	<body>
+		<div class="indexMain">
+			<div class="indexIntro">
+				<h1>Quelle température et humidité aujourd’hui ?</h1>
+				<p>
+					Sélectionnez sur les des boutons ci dessous les données que vous
+					souhaitez afficher.
+				</p>
+				<p>Les données sont actualisées toutes les heures.</p>
+			</div>
+
+			<!-- température -->
+
+			<div class="indexTemp">
+				<div>
+					<form
+						action="file:///C:/Users/Baptiste/OneDrive/Bureau/projet%20cube%20m%C3%A9t%C3%A9o/templates/temp%C3%A9rature.html"
+						name="boutontemp"
+					>
+						<input type="submit" name="temp" value="Afficher la température" />
+					</form>
+					<img src="/images/temperature.svg"></img>
+				</div>
+			</div>
+
+			<!-- humidité -->
+
+			<div class="indexHumid">
+				<div>
+					<form action="https://www.youtube.com/" name="boutonhumidite">
+						<input type="submit" name="temp" value="Afficher l’humidité" />
+					</form>
+					<img src="/images/humidite.svg"></img>
+
+				</div>
+			</div>
+
+			<!-- humidité et température -->
+
+			<div class="indexMix">
+				<div>
+					<form action="get" name="boutontemphumidite">
+						<input
+							type="button"
+							name="temp"
+							value="Afficher l’humidité et la température"
+						/>
+					</form>
+					<img src="/images/fleche-droite.svg"></img>
+
+				</div>
+			</div>
+		</div>
+		<footer>
+			<p>&copy; 2023 Météo App</p>
+		</footer>
+	</body>
+</html>
