@@ -5,17 +5,19 @@ body {
 	flex-direction: column;
 	background-color: #ecf4d6;
 	margin: 0;
-	height: 100vh;
+	height: 100%;
 }
 
 h1 {
 	font-family: "Montserrat", sans-serif;
 	color: #265073;
+	margin: 20px;
 }
 
 p {
 	font-family: "Roboto", sans-serif;
 	color: #265073;
+	margin: 20px;
 }
 
 input {
@@ -43,13 +45,12 @@ div.indexMain {
 	padding: 10px;
 	display: flex;
 	width: 80%;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: center;
 	margin-top: 20px;
 	height: fit-content;
 }
 
-/* Pour aligner les images à droite des inputs */
 div.indexTemp div,
 div.indexHumid div,
 div.indexMix div {
@@ -58,19 +59,19 @@ div.indexMix div {
 	align-items: center;
 }
 
-/* Ajustement spécifique pour l'image dans div.indexTemp */
 div.indexTemp div img {
-	margin-left: 20px; /* Espacement entre l'input et l'image */
+	margin-left: 20px;
+	order: 1;
 }
 
-/* Ajustement spécifique pour l'image dans div.indexHumid */
 div.indexHumid div img {
-	margin-right: 20px; /* Espacement entre l'image et l'input */
+	margin-right: 20px;
+	order: 2;
 }
 
-/* Ajustement spécifique pour l'image dans div.indexMix */
 div.indexMix div img {
-	margin-left: 20px; /* Espacement entre l'input et l'image */
+	margin-left: 20px;
+	order: 1;
 }
 
 div.indexIntro {
