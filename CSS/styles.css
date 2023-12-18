@@ -49,6 +49,30 @@ div.indexMain {
 	height: fit-content;
 }
 
+/* Pour aligner les images à droite des inputs */
+div.indexTemp div,
+div.indexHumid div,
+div.indexMix div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* Ajustement spécifique pour l'image dans div.indexTemp */
+div.indexTemp div img {
+	margin-left: 20px; /* Espacement entre l'input et l'image */
+}
+
+/* Ajustement spécifique pour l'image dans div.indexHumid */
+div.indexHumid div img {
+	margin-right: 20px; /* Espacement entre l'image et l'input */
+}
+
+/* Ajustement spécifique pour l'image dans div.indexMix */
+div.indexMix div img {
+	margin-left: 20px; /* Espacement entre l'input et l'image */
+}
+
 div.indexIntro {
 	background-color: #ecf4d6;
 	flex-direction: column;
