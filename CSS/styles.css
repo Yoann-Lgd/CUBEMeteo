@@ -58,20 +58,11 @@ div.indexMix div {
 	justify-content: space-between;
 	align-items: center;
 }
-
-div.indexTemp div img {
-	margin-left: 20px;
-	order: 1;
-}
-
-div.indexHumid div img {
-	margin-right: 20px;
-	order: 2;
-}
-
+div.indexTemp div img,
+div.indexHumid div img,
 div.indexMix div img {
-	margin-left: 20px;
-	order: 1;
+	order: -1;
+	margin-right: 20px;
 }
 
 div.indexIntro {
