@@ -1,3 +1,20 @@
+<?php
+
+/*CONNECTION AVEC LA BDD MYSQL*/
+
+require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD*/
+
+$BDD = connect_to('cube_meteo');
+
+/*
+$cursor = $BDD->query('SELECT * FROM temperature');
+$dataToReturn = $cursor->fetchAll();
+
+print_r($dataToReturn);
+*/
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
