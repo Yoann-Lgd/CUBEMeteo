@@ -1,0 +1,90 @@
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: #ecf4d6;
+	margin: 0;
+	height: 100vh;
+}
+
+h1 {
+	font-family: "Montserrat", sans-serif;
+	color: #265073;
+}
+
+p {
+	font-family: "Roboto", sans-serif;
+	color: #265073;
+}
+
+input {
+	background-color: #ecf4d6;
+	flex-direction: row;
+	border-radius: 24px;
+	padding: 10px;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	font-family: "Roboto", sans-serif;
+	color: #265073;
+	border: none;
+}
+
+div {
+	margin: 20px;
+}
+
+div.indexMain {
+	background-color: #9ad0c2;
+	flex-direction: column;
+	border-radius: 24px;
+	padding: 10px;
+	display: flex;
+	width: 80%;
+	align-items: flex-start;
+	justify-content: center;
+	margin-top: 20px;
+	height: fit-content;
+}
+
+div.indexIntro {
+	background-color: #ecf4d6;
+	flex-direction: column;
+	border-radius: 24px;
+	padding: 10px;
+	display: flex;
+	width: 80%;
+	justify-content: left;
+}
+
+div.indexTemp {
+	background-color: #ecf4d6;
+	flex-direction: row;
+	border-radius: 24px;
+	padding: 10px;
+	display: flex;
+	width: 80%;
+	justify-content: left;
+}
+
+div.indexHumid {
+	background-color: #ecf4d6;
+	flex-direction: row;
+	border-radius: 24px;
+	padding: 10px;
+	display: flex;
+	width: 80%;
+	justify-content: left;
+}
+
+div.indexMix {
+	background-color: #ecf4d6;
+	flex-direction: row;
+	border-radius: 24px;
+	padding: 10px;
+	display: flex;
+	width: 80%;
+	justify-content: left;
+}
