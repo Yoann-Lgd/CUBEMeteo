@@ -147,3 +147,10 @@ div.accueil {
 	padding: 20px;
 	border-radius: 100px;
 }
+
+table.charts-css.column {
+	width: 100%;
+	max-width: 500px;
+	/* margin: 0 auto; */
+	padding: 10px;
+}

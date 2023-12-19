@@ -6,70 +6,99 @@ require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet 
 
 $BDD = connect_to('cube_meteo');
 
-
-$cursor = $BDD->query('SELECT * FROM temperature');
-$dataToReturn = $cursor->fetchAll(PDO::FETCH_ASSOC);
-
-echo date("Y-m-d h:i:s")."              ";
+$h = date("h") + 1;
+echo date("Y-m-d ".$h.":i:s") . "              ";
 
 
-function averageTemp($BDD,$Table){
+function averageTemp($BDD, $Table)
+{
 
     /* On récupère le jour actuel et on lui retire 5 de 1 en 1 en stockant dans des variables pour récupérer les 5 derniers jours */
 
     $day = date("d");
-    $minusOne = $day-1;
-    $minusTwo = $minusOne-1;
-    $minusThree = $minusTwo-1;
-    $minusFour = $minusThree-1;
+    $minusOne = $day - 1;
+    $minusTwo = $minusOne - 1;
+    $minusThree = $minusTwo - 1;
+    $minusFour = $minusThree - 1;
 
     //docTest
     /*echo $day . "/".$minusOne."/".$minusTwo."/".$minusThree."/".$minusFour;*/
     //
     //Définir les dates à comparer:
     $monthAndYear = date("m/Y");
-    $actualDay = $day."/".$monthAndYear;
-    $dayFour = $minusOne."/".$monthAndYear;
-    $dayThree = $minusTwo."/".$monthAndYear;
-    $dayTwo = $minusThree."/".$monthAndYear;
-    $dayOne = $minusFour."/".$monthAndYear;
+    $actualDay = $day . "/" . $monthAndYear;
+    $dayFour = $minusOne . "/" . $monthAndYear;
+    $dayThree = $minusTwo . "/" . $monthAndYear;
+    $dayTwo = $minusThree . "/" . $monthAndYear;
+    $dayOne = $minusFour . "/" . $monthAndYear;
 
-    echo $actualDay . "   /   " .$dayFour . "   /   " .$dayThree . "   /   " .$dayTwo . "   /   " .$dayOne;
+    //echo $actualDay . "   /   " . $dayFour . "   /   " . $dayThree . "   /   " . $dayTwo . "   /   " . $dayOne;
 
+    $cursor = $BDD->query('SELECT Temperature FROM '.$Table.' WHERE Date IN '.$actualDay."'");
+    $data = $cursor->fetchAll(PDO::FETCH_ASSOC);
+    print_r($data);
 }
 
+//averageTemp($BDD,'releves');
 ?>
 
 
 <!DOCTYPE html>
 <html lang="fr">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="../CSS/styles.css" />
-		<link rel="stylesheet" href="../CSS/charts.min.css" />
-		<title>Température</title>
-	</head>
-	<body>
-		<div class="mainTemperature">
-			<div class="temperature">
-				<h1>Quelle température:</h1>
-				<p>Jettez un oeil à la température sur les dernières heures.</p>
-				<div class="graph">
-					<div class="lundi">LU.</div>
-					<div class="mardi">MA.</div>
-					<div class="mercredi">ME.</div>
-					<div class="jeudi">JE.</div>
-					<div class="vendredi">VE.</div>
-					<div class="samedi">SA.</div>
-					<div class="dimanche">DI.</div>
-				</div>
-				<p>La température moyenne sur les 5 derniers jours était de&nbspX.</p>
-			</div>
-		</div>
 
-		<div class="accueil">
-			<a href="index.html"><img src="../images/maison.svg" /></a>
-		</div>
-	</body>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/charts.min.css" />
+    <title>Température</title>
+</head>
+
+<body>
+    <div class="mainTemperature">
+        <div class="temperature">
+            <h1>Quelle température:</h1>
+            <p>Jettez un oeil à la température sur les dernières heures.</p>
+
+            <table class="charts-css column">
+
+                <caption> Température </caption>
+
+                <tbody>
+                    <tr>
+                        <th scope="row"> Test date</th>
+                        <td style="--size: calc( 40 / 100 )"> </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td style="--size: calc( 60 / 100 )"> </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+
+                        <td style="--size: calc( 75 / 100 )"> </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+
+                        <td style="--size: calc( 90 / 100 )"> </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+
+                        <td style="--size: calc( 100 / 100 )"> </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <p>La température moyenne sur les 5 derniers jours était de&nbspX.</p>
+        </div>
+    </div>
+
+    <div class="accueil">
+        <a href="index.html"><img src="../images/maison.svg" /></a>
+    </div>
+</body>
+
 </html>
