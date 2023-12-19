@@ -10,16 +10,20 @@ if ($jsonData !== null) {
     $data = json_decode($jsonData, true);
 
     if ($data !== null) {
+        $deviceId = $data['id'];
         $deviceName = $data['deviceName'];
         $temperature = $data['temperature'];
-        $date = $data['date'];
-        $humidity = $data['humidity'];
+        $dateRelevee = $data['date'];
+        $humidite = $data['humidity'];
     } else {
         echo "Erreur lors du décodage des données JSON.";
     }
 } else {
     echo "Erreur provenant du scrypt Raspberry";
 }
+
+
+
 
 // Fonction pour insérer une Sonde
 function insertSonde($nom) {
@@ -29,7 +33,6 @@ function insertSonde($nom) {
     $stmt = $BDD->prepare($query);
     $stmt->bindParam(':nom', $nom);
 
-    // Exécute la requête et stocke le résultat dans une variable
     $result = $stmt->execute();
 
     if ($result) {
@@ -43,7 +46,7 @@ function insertSonde($nom) {
 
 // insertSonde($deviceName);
 
-// Fonction pour récupérer la sonde selon son id
+//Fonction pour récupérer la sonde selon son id
 function getSondeById($idSonde){
     global $BDD;
 
@@ -66,7 +69,6 @@ function updateSonde($id, $nom) {
     $stmt->bindParam(':nom', $nom);
     $stmt->bindParam(':id', $id);
 
-    // Exécute la requête et stocke le résultat dans une variable
     $result = $stmt->execute();
 
     if ($result) {
@@ -78,5 +80,43 @@ function updateSonde($id, $nom) {
     return $result;
 }
 
-$sonde = updateSonde(1, "jj");
+// $sonde = updateSonde(1, "jj");
+
+function insertReleves($date, $temperature, $humidite, $idSonde) {
+    global $BDD;
+
+    // Insérer dans la table Releves
+    $queryReleves = "INSERT INTO Releves (Date, Temperature, Humidite, ID_Sonde) VALUES (:date, :temperature, :humidite, :idSonde)";
+    $stmtReleves = $BDD->prepare($queryReleves);
+    $stmtReleves->bindParam(':date', $date);
+    $stmtReleves->bindParam(':temperature', $temperature);
+    $stmtReleves->bindParam(':humidite', $humidite);
+    $stmtReleves->bindParam(':idSonde', $idSonde);
+    $result = $stmtReleves->execute();
+
+    if($result){
+        echo 'Insertion des relevés réussie.';
+    }else{
+        echo `Erreur, les insertions des relevés n'a pas été effectuée`;
+    }
+
+}
+
+insertReleves($dateRelevee, $temperature, $humidite, 1);
+
+function getSelectReleves($idReleves) {
+    global $BDD;
+
+    
+    $queryReleves = "SELECT * FROM Releves WHERE ID = :idReleves";
+    $stmtReleves = $BDD->prepare($queryReleves);
+    $stmtReleves->bindParam(':idReleves', $idReleves);
+    $stmtReleves->execute();
+
+    return $stmtReleves->fetch(PDO::FETCH_ASSOC);
+}
+
+$releves = getSelectReleves(1);
+print_r($releves)
+
 ?>
