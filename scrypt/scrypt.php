@@ -1,14 +1,16 @@
 <?php
 
 function generateRaspberryData() {
-    $temperature = rand(0, 50) + (rand(0, 99) / 100); // Simule une température entre 0 et 50
-    $humidity = rand(0, 100); // Simule une humidité entre 0 et 100
+    $temperature = rand(0, 40) + (rand(0, 90) / 100); // Simule une température entre 0 et 50
+    $humidity = rand(0, 100); // Simule une humidité entre 0 et 100`
+    $h = date("h")+1;
+    $date = date("Y-m-d ".$h.":i:s");
 
     $data = [
-        'messageId' => 1,
+        'id' => 1,
         'deviceName' => 'Sonde',
         'temperature' => $temperature,
-        'date'=> date('Y-m-d H:i:s'),
+        'date'=> $date,
         'humidity' => $humidity
     ];
     return json_encode($data);
