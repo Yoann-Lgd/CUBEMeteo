@@ -148,8 +148,9 @@ div.accueil {
 	border-radius: 100px;
 }
 
-#my-chart {
-	width: 80%;
-	max-width: 300px;
-	margin: 0 auto;
+table.charts-css.column {
+	width: 100%;
+	max-width: 500px;
+	/* margin: 0 auto; */
+	padding: 10px;
 }
