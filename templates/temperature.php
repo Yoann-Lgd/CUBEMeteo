@@ -7,7 +7,7 @@ require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 
 $fiveDays = fiveDayBefore();
 $actualDay = $fiveDays[0];
-$todayAverage = averageTemp($BDD, 'releves',$actualDay);
+$todayAverage = averageTemp($BDD, 'releves', $actualDay);
 echo $todayAverage;
 
 ?>
@@ -37,24 +37,16 @@ echo $todayAverage;
                 <tbody>
                     <tr>
                         <th scope="row">Test date</th>
-                        <td style="--size: calc(<?php echo $todayAverage;?> / 40)">
-                            <span class="data"><?php echo $todayAverage;?></span>
-                            <span class="tooltip"><?php echo $todayAverage;?><br /></span>
+                        <td style="--size: calc(<?php echo $todayAverage; ?> / 40)">
+                            <span class="data">
+                                <?php echo $todayAverage; ?>
+                            </span>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"></th>
                         <td style="--size: calc(20 / 40)">
                             <span class="data">20</span>
-                            <span class="tooltip">data: 20<br />more info</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"></th>
-
-                        <td style="--size: calc(20 / 40)">
-                            <span class="data">20</span>
-                            <span class="tooltip">data: 20<br />more info</span>
                         </td>
                     </tr>
                     <tr>
@@ -62,7 +54,6 @@ echo $todayAverage;
 
                         <td style="--size: calc(20 / 40)">
                             <span class="data">20</span>
-                            <span class="tooltip">data: 20<br />more info</span>
                         </td>
                     </tr>
                     <tr>
@@ -70,7 +61,13 @@ echo $todayAverage;
 
                         <td style="--size: calc(20 / 40)">
                             <span class="data">20</span>
-                            <span class="tooltip">data: 20<br />more info</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
                         </td>
                     </tr>
                 </tbody>
