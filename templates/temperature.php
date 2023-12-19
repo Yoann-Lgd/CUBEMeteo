@@ -2,13 +2,13 @@
 
 /*CONNECTION AVEC LA BDD MYSQL*/
 
-require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD*/
+require('connect.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
 require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 
 $fiveDays = fiveDayBefore();
 $actualDay = $fiveDays[0];
 $todayAverage = averageTemp($BDD, 'releves', $actualDay);
-echo $todayAverage;
+
 
 ?>
 
@@ -36,7 +36,7 @@ echo $todayAverage;
 
                 <tbody>
                     <tr>
-                        <th scope="row">Test date</th>
+                        <th scope="row"><?php echo $actualDay; ?></th>
                         <td style="--size: calc(<?php echo $todayAverage; ?> / 40)">
                             <span class="data">
                                 <?php echo $todayAverage; ?>

@@ -64,6 +64,11 @@ function averageTemp($BDD, $Table,$day)
 
     }
 
-    return round(averageFromArray($today_sum));
+    $average = averageFromArray($today_sum);
+    $stringValue = (string)$average;
+    $dataToReturn = substr($stringValue,0,4);
+    return (float)$dataToReturn;
+
 }
+
 ?>
