@@ -58,27 +58,27 @@ if ($jsonData !== null) {
 // $raspberry = getRaspberryById(1);
 // print_r($raspberry);
 
-// // Fonction pour insérer une Sonde
-// function insertSonde($nom, $idRaspberry) {
-//     global $BDD;
+// Fonction pour insérer une Sonde
+function insertSonde($nom, $idRaspberry) {
+    global $BDD;
 
-//     $query = "INSERT INTO Sonde (nom, ID_Raspberry) VALUES (:nom, :idRaspberry)";
+    $query = "INSERT INTO Sonde (nom, ID_Raspberry) VALUES (:nom, :idRaspberry)";
 
-//     $stmt = $BDD->prepare($query);
-//     $stmt->bindParam(':nom', $nom);
-//     $stmt->bindParam(':idRaspberry', $idRaspberry);
+    $stmt = $BDD->prepare($query);
+    $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':idRaspberry', $idRaspberry);
 
-//     $result = $stmt->execute();
+    $result = $stmt->execute();
 
-//     if ($result) {
-//         echo 'Insertion réussie.';
-//     } else {
-//         $errorInfo = $stmt->errorInfo();
-//         echo 'Échec de l\'insertion.';
-//     }
+    if ($result) {
+        echo 'Insertion réussie.';
+    } else {
+        $errorInfo = $stmt->errorInfo();
+        echo 'Échec de l\'insertion.';
+    }
 
-//     return $result;
-// }
+    return $result;
+}
 
 
 // insertSonde("NomDeLaSonde", 1);
