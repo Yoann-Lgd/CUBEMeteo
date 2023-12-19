@@ -164,6 +164,9 @@ div.accueil {
 	background-color: #9ad0c2;
 	padding: 20px;
 	border-radius: 100px;
+	position: fixed;
+	right: -14px;
+	top: 0px;
 }
 
 tr {
@@ -180,7 +183,6 @@ span {
 	color: #fff;
 	padding: 10px;
 	overflow: hidden;
-	white-space: nowrap;
 }
 
 span.tooltip {
@@ -232,6 +234,9 @@ table.charts-css.bar td {
 table.charts-css.bar tbody th {
 	background-color: #ecf4d6;
 	z-index: 1;
+	white-space: nowrap;
+	margin: 10px;
+	font-size: 14px;
 }
 table.charts-css.bar tbody td {
 	animation: moving-bars 2s linear forwards;
@@ -239,7 +244,7 @@ table.charts-css.bar tbody td {
 }
 @keyframes moving-bars {
 	0% {
-		transform: translateX(-100%);
+		transform: translateX(100%);
 	}
 	30% {
 		transform: translateX(0);
