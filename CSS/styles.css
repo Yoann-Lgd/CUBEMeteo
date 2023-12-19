@@ -219,7 +219,7 @@ div.temperature img {
 table.charts-css.bar tbody {
 	overflow-x: hidden;
 	overflow: hidden;
-	width: 150%;
+	width: 100%;
 }
 
 table.charts-css.bar td {

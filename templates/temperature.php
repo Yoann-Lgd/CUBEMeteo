@@ -3,76 +3,12 @@
 /*CONNECTION AVEC LA BDD MYSQL*/
 
 require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD*/
-
-$BDD = connect_to('cube_meteo');
-
-// $h = date("h") + 1;
-// echo date("Y-m-d ".$h.":i:s") . "              ";
-
-
-function averageFromArray($Array)
-{
-    // retourne la moyenne d'un tableau passé en paramètre
-    $sum = array_sum($Array);
-    $averageData = $sum / count($Array);
-    return $averageData;
-}
-
-function fiveDayBefore()
-{
-    /* On récupère le jour actuel et on lui retire 5 de 1 en 1 en stockant dans des variables pour récupérer les 5 derniers jours */
-
-    $day = date("d");
-    $minusOne = $day - 1;
-    $minusTwo = $minusOne - 1;
-    $minusThree = $minusTwo - 1;
-    $minusFour = $minusThree - 1;
-
-    //docTest
-    /*echo $day . "/".$minusOne."/".$minusTwo."/".$minusThree."/".$minusFour;*/
-    //
-
-
-    //Définir les dates à comparer:
-    $yearAndMonth = date("Y-m");
-    $actualDay = $yearAndMonth . "-" . $day;
-    $dayFour = $yearAndMonth . "-" . $minusOne;
-    $dayThree = $yearAndMonth . "-" . $minusTwo;
-    $dayTwo = $yearAndMonth . "-" . $minusThree;
-    $dayOne = $yearAndMonth . "-" . $minusFour;
-
-    //On les ajoutent à une liste que l'on va return
-    $arrayToReturn = [];
-    $arrayToReturn[] = $actualDay;
-    $arrayToReturn[] = $dayFour;
-    $arrayToReturn[] = $dayThree;
-    $arrayToReturn[] = $dayTwo;
-    $arrayToReturn[] = $dayOne;
-
-    return $arrayToReturn;
-}
-
-function averageTemp($BDD, $Table,$day)
-{
-    $fiveDay = fiveDayBefore();
-    $day = $fiveDay[0][0];
-
-    $cursor = $BDD->query("SELECT Temperature FROM ".$Table." WHERE Date LIKE '%" . $day . "%'");
-    $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
-    $length = count($data);
-    $today_sum = [];
-    for ($i = 1; $i < $length; $i++) {
-        $today_sum[] = $data[$i][0];
-
-    }
-
-    echo averageFromArray($today_sum);
-}
+require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 
 $fiveDays = fiveDayBefore();
 $actualDay = $fiveDays[0];
-averageTemp($BDD, 'releves',$actualDay);
-
+$todayAverage = averageTemp($BDD, 'releves',$actualDay);
+echo $todayAverage;
 
 ?>
 
@@ -101,9 +37,9 @@ averageTemp($BDD, 'releves',$actualDay);
                 <tbody>
                     <tr>
                         <th scope="row">Test date</th>
-                        <td style="--size: calc(<?php averageTemp($BDD, 'releves',$actualDay);?> / 40)">
-                            <span class="data">20</span>
-                            <span class="tooltip"><?php averageTemp($BDD, 'releves',$actualDay);?><br />more info</span>
+                        <td style="--size: calc(<?php echo $todayAverage;?> / 40)">
+                            <span class="data"><?php echo $todayAverage;?></span>
+                            <span class="tooltip"><?php echo $todayAverage;?><br /></span>
                         </td>
                     </tr>
                     <tr>
