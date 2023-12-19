@@ -200,6 +200,7 @@ span.tooltip {
 	width: -moz-max-content;
 	width: max-content;
 	z-index: 1;
+	overflow: visible;
 }
 
 table.charts-css.bar {
@@ -214,12 +215,14 @@ table.charts-css.bar {
 }
 
 div.temperature img {
-	width: 40%;
+	width: 20%;
 	margin: 20px;
 }
 
 table.charts-css.bar tbody {
 	overflow-x: hidden;
+	overflow: hidden;
+	width: 150%;
 }
 
 table.charts-css.bar td {
