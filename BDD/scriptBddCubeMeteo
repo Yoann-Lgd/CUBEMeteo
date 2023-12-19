@@ -4,66 +4,28 @@
 
 
 #------------------------------------------------------------
-# Table: Raspberry
-#------------------------------------------------------------
-
-CREATE TABLE Raspberry(
-        ID  Int  Auto_increment  NOT NULL ,
-        Nom Varchar (50) NOT NULL
-	,CONSTRAINT Raspberry_PK PRIMARY KEY (ID)
-)ENGINE=InnoDB;
-
-
-#------------------------------------------------------------
 # Table: Sonde
 #------------------------------------------------------------
 
 CREATE TABLE Sonde(
-        ID           Int  Auto_increment  NOT NULL ,
-        nom          Varchar (50) NOT NULL ,
-        ID_Raspberry Int NOT NULL
+        ID  Int  Auto_increment  NOT NULL ,
+        nom Varchar (50) NOT NULL
 	,CONSTRAINT Sonde_PK PRIMARY KEY (ID)
-
-	,CONSTRAINT Sonde_Raspberry_FK FOREIGN KEY (ID_Raspberry) REFERENCES Raspberry(ID)
 )ENGINE=InnoDB;
 
 
 #------------------------------------------------------------
-# Table: Température
+# Table: Releves
 #------------------------------------------------------------
 
-CREATE TABLE Temperature(
-        ID     Int  Auto_increment  NOT NULL ,
-        Date   Datetime NOT NULL ,
-        Valeur Float NOT NULL
-	,CONSTRAINT Temperature_PK PRIMARY KEY (ID)
-)ENGINE=InnoDB;
+CREATE TABLE Releves(
+        ID          Int  Auto_increment  NOT NULL ,
+        Date        Datetime NOT NULL ,
+        Temperature Float NOT NULL ,
+        Humidite    Float NOT NULL ,
+        ID_Sonde    Int NOT NULL
+	,CONSTRAINT Releves_PK PRIMARY KEY (ID)
 
-
-#------------------------------------------------------------
-# Table: Humidité
-#------------------------------------------------------------
-
-CREATE TABLE Humidite(
-        ID     Int  Auto_increment  NOT NULL ,
-        Date   Datetime NOT NULL ,
-        Valeur Float NOT NULL
-	,CONSTRAINT Humidite_PK PRIMARY KEY (ID)
-)ENGINE=InnoDB;
-
-
-#------------------------------------------------------------
-# Table: Analyse
-#------------------------------------------------------------
-
-CREATE TABLE Analyse(
-        ID             Int NOT NULL ,
-        ID_Temperature Int NOT NULL ,
-        ID_Humidite    Int NOT NULL
-	,CONSTRAINT Analyse_PK PRIMARY KEY (ID,ID_Temperature,ID_Humidite)
-
-	,CONSTRAINT Analyse_Sonde_FK FOREIGN KEY (ID) REFERENCES Sonde(ID)
-	,CONSTRAINT Analyse_Temperature0_FK FOREIGN KEY (ID_Temperature) REFERENCES Temperature(ID)
-	,CONSTRAINT Analyse_Humidite1_FK FOREIGN KEY (ID_Humidite) REFERENCES Humidite(ID)
+	,CONSTRAINT Releves_Sonde_FK FOREIGN KEY (ID_Sonde) REFERENCES Sonde(ID)
 )ENGINE=InnoDB;
 
