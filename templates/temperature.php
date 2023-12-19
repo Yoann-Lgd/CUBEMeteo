@@ -52,12 +52,12 @@ function fiveDayBefore()
     return $arrayToReturn;
 }
 
-function averageTemp($BDD, $Table)
+function averageTemp($BDD, $Table,$day)
 {
     $fiveDay = fiveDayBefore();
-    $actualDay = $fiveDay[0][0];
+    $day = $fiveDay[0][0];
 
-    $cursor = $BDD->query("SELECT Temperature FROM releves WHERE Date LIKE '%" . $actualDay . "%'");
+    $cursor = $BDD->query("SELECT Temperature FROM ".$Table." WHERE Date LIKE '%" . $day . "%'");
     $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
     $length = count($data);
     $today_sum = [];
@@ -69,7 +69,9 @@ function averageTemp($BDD, $Table)
     echo averageFromArray($today_sum);
 }
 
-averageTemp($BDD, 'releves');
+$fiveDays = fiveDayBefore();
+$actualDay = $fiveDays[0];
+averageTemp($BDD, 'releves',$actualDay);
 
 
 ?>
@@ -99,9 +101,9 @@ averageTemp($BDD, 'releves');
                 <tbody>
                     <tr>
                         <th scope="row">Test date</th>
-                        <td style="--size: calc(20 / 40)">
+                        <td style="--size: calc(<?php averageTemp($BDD, 'releves',$actualDay);?> / 40)">
                             <span class="data">20</span>
-                            <span class="tooltip">data: 20<br />more info</span>
+                            <span class="tooltip"><?php averageTemp($BDD, 'releves',$actualDay);?><br />more info</span>
                         </td>
                     </tr>
                     <tr>
