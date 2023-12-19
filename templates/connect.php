@@ -1,11 +1,10 @@
 <?php
-try{
+try {
+    $BDD = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', 'root');
+    echo 'Connexion réussie à la base de données';
 
-    $BDD = new PDO('mysql:host=localhost;dbname=cube_meteo','root','');
 
-
-}
-catch(PDOException $erreur){
+} catch (PDOException $erreur) {
     echo 'Echec de la connexion suite à l\'erreur suivante : ' . $erreur->getMessage();
     exit;
 }
