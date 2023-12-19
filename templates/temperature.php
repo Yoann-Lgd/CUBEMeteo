@@ -6,8 +6,8 @@ require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet 
 
 $BDD = connect_to('cube_meteo');
 
-
-echo date("Y-m-d h:i:s") . "              ";
+$h = date("h") + 1;
+echo date("Y-m-d ".$h.":i:s") . "              ";
 
 
 function averageTemp($BDD, $Table)
@@ -32,10 +32,14 @@ function averageTemp($BDD, $Table)
     $dayTwo = $minusThree . "/" . $monthAndYear;
     $dayOne = $minusFour . "/" . $monthAndYear;
 
-    echo $actualDay . "   /   " . $dayFour . "   /   " . $dayThree . "   /   " . $dayTwo . "   /   " . $dayOne;
+    //echo $actualDay . "   /   " . $dayFour . "   /   " . $dayThree . "   /   " . $dayTwo . "   /   " . $dayOne;
 
+    $cursor = $BDD->query('SELECT Temperature FROM '.$Table.' WHERE Date IN '.$actualDay."'");
+    $data = $cursor->fetchAll(PDO::FETCH_ASSOC);
+    print_r($data);
 }
 
+//averageTemp($BDD,'releves');
 ?>
 
 
