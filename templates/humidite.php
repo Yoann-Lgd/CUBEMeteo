@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../CSS/styles.css">
     <link rel="stylesheet" href="../CSS/charts.min.css" />
 
-    <title>humidité</title>
+    <title>Humidité</title>
 </head>
 
 <body>
@@ -15,39 +15,59 @@
         <div class="humidite">
             <h1>Quelle humidité:</h1>
             <p>Jettez un oeil à l’humidité sur les dernières heures.</p>
-            <div class="graph">
-                <table class="charts-css column">
+            <table class="charts-css bar data-spacing-5 show-labels show-data-on-hover">
+                <caption>
+                    Humidité
+                </caption>
 
-                    <caption> Température </caption>
+                <tbody>
+                    <tr>
+                        <th scope="row">Test date</th>
+                        <td style="--size: calc(<?php echo $todayAverage; ?> / 40)">
+                            <span class="data">
+                                <?php echo $todayAverage; ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
 
-                    <tbody>
-                        <tr>
-                            <td style="--size: calc( 40 / 100 )"> </td>
-                        </tr>
-                        <tr>
-                            <td style="--size: calc( 60 / 100 )"> </td>
-                        </tr>
-                        <tr>
-                            <td style="--size: calc( 75 / 100 )"> </td>
-                        </tr>
-                        <tr>
-                            <td style="--size: calc( 90 / 100 )"> </td>
-                        </tr>
-                        <tr>
-                            <td style="--size: calc( 100 / 100 )"> </td>
-                        </tr>
-                    </tbody>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
 
-                </table>
-            </div>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"></th>
+
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <p>L’humidité moyenne sur les 5 derniers jours était de
             <p class="averageHumidity">&nbspX</p>.</p>
+            <img src="../images/rire.svg" />
+
         </div>
 
     </div>
 
     <div class="accueil">
-        <a href="index.html"><img src="../images/maison 1.svg"></a>
+        <a href="index.html"><img src="../images/maison.svg"></a>
     </div>
 </body>
 

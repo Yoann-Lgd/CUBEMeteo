@@ -107,7 +107,8 @@ div.indexMix {
 }
 
 div.mainError,
-div.mainTemperature {
+div.mainTemperature,
+div.mainHumi {
 	background-color: #9ad0c2;
 	flex-direction: column;
 	border-radius: 24px;
@@ -130,7 +131,8 @@ div.erreur {
 	justify-content: left;
 }
 
-div.temperature {
+div.temperature,
+div.humidite {
 	background-color: #ecf4d6;
 	flex-direction: column;
 	border-radius: 24px;
