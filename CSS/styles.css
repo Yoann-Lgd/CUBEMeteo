@@ -183,7 +183,9 @@ span {
 span.tooltip {
 	background-color: #555;
 	border-radius: 6px;
-	bottom: 50%;
+	bottom: calc(
+		100% + 5px
+	); /* Positionner légèrement au-dessus du span parent */
 	color: #fff;
 	font-size: 0.9rem;
 	left: 50%;
@@ -191,14 +193,10 @@ span.tooltip {
 	padding: 5px 10px;
 	position: absolute;
 	text-align: center;
-	-webkit-transform: translateX(-50%);
 	transform: translateX(-50%);
-	-webkit-transition: opacity 0.3s;
 	transition: opacity 0.3s;
 	visibility: hidden;
-	width: -webkit-max-content;
-	width: -moz-max-content;
-	width: max-content;
+	white-space: nowrap; /* Empêche le texte de se couper sur plusieurs lignes */
 	z-index: 1;
 }
 
@@ -214,12 +212,14 @@ table.charts-css.bar {
 }
 
 div.temperature img {
-	width: 40%;
+	width: 20%;
 	margin: 20px;
 }
 
 table.charts-css.bar tbody {
 	overflow-x: hidden;
+	overflow: hidden;
+	width: 150%;
 }
 
 table.charts-css.bar td {
@@ -232,6 +232,7 @@ table.charts-css.bar tbody th {
 }
 table.charts-css.bar tbody td {
 	animation: moving-bars 2s linear forwards;
+	position: relative;
 }
 @keyframes moving-bars {
 	0% {
