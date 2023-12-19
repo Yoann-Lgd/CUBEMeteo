@@ -147,3 +147,9 @@ div.accueil {
 	padding: 20px;
 	border-radius: 100px;
 }
+
+#my-chart {
+	width: 100%;
+	max-width: 300px;
+	margin: 0 auto;
+}
