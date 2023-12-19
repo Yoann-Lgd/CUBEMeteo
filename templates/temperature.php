@@ -6,12 +6,38 @@ require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet 
 
 $BDD = connect_to('cube_meteo');
 
-/*
-$cursor = $BDD->query('SELECT * FROM temperature');
-$dataToReturn = $cursor->fetchAll();
 
-print_r($dataToReturn);
-*/
+$cursor = $BDD->query('SELECT * FROM temperature');
+$dataToReturn = $cursor->fetchAll(PDO::FETCH_ASSOC);
+
+echo date("Y-m-d h:i:s")."              ";
+
+
+function averageTemp($BDD,$Table){
+
+    /* On récupère le jour actuel et on lui retire 5 de 1 en 1 en stockant dans des variables pour récupérer les 5 derniers jours */
+
+    $day = date("d");
+    $minusOne = $day-1;
+    $minusTwo = $minusOne-1;
+    $minusThree = $minusTwo-1;
+    $minusFour = $minusThree-1;
+
+    //docTest
+    /*echo $day . "/".$minusOne."/".$minusTwo."/".$minusThree."/".$minusFour;*/
+    //
+    //Définir les dates à comparer:
+    $monthAndYear = date("m/Y");
+    $actualDay = $day."/".$monthAndYear;
+    $dayFour = $minusOne."/".$monthAndYear;
+    $dayThree = $minusTwo."/".$monthAndYear;
+    $dayTwo = $minusThree."/".$monthAndYear;
+    $dayOne = $minusFour."/".$monthAndYear;
+
+    echo $actualDay . "   /   " .$dayFour . "   /   " .$dayThree . "   /   " .$dayTwo . "   /   " .$dayOne;
+
+}
+
 ?>
 
 
