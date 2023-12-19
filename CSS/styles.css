@@ -150,7 +150,12 @@ div.imgError {
 	align-items: center;
 	flex-wrap: wrap;
 }
-
+div.erreur img {
+	width: 40%;
+	margin: 20px;
+	position: relative;
+	left: 25%;
+}
 div.accueil {
 	height: fit-content;
 	width: fit-content;
