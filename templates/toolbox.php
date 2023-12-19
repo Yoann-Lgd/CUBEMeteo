@@ -53,7 +53,6 @@ function fiveDayBefore()
 function averageTemp($BDD, $Table,$day)
 {
     $fiveDay = fiveDayBefore();
-    $day = $fiveDay[0][0];
 
     $cursor = $BDD->query("SELECT Temperature FROM ".$Table." WHERE Date LIKE '%" . $day . "%'");
     $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
@@ -70,5 +69,29 @@ function averageTemp($BDD, $Table,$day)
     return (float)$dataToReturn;
 
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------------//
+
+function averageHumidity($BDD, $Table, $day){
+    $fiveDay = fiveDayBefore();
+
+    $cursor = $BDD->query("SELECT Humidite FROM ".$Table." WHERE Date LIKE '%" . $day . "%'");
+    $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
+    $length = count($data);
+    $today_sum = [];
+    for ($i = 1; $i < $length; $i++) {
+        $today_sum[] = $data[$i][0];
+
+    }
+
+    $average = averageFromArray($today_sum);
+    $stringValue = (string)$average;
+    $dataToReturn = substr($stringValue,0,4);
+    return (float)$dataToReturn;
+}
+
+
+
+
 
 ?>

@@ -4,8 +4,11 @@ try {
 
 
 } catch (PDOException $erreur) {
-    echo 'Echec de la connexion suite à l\'erreur suivante : ' . $erreur->getMessage();
+    // echo 'Echec de la connexion suite à l\'erreur suivante : ' . $erreur->getMessage();
+
+    header('Location: /templates/erreur.html',TRUE);
     exit;
+    
 }
 
 function connect_to($BddName){

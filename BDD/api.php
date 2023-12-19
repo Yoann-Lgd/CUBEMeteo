@@ -117,7 +117,7 @@ function getSelectReleves($idReleves) {
 }
 
 $releves = getSelectReleves(1);
-print_r($releves)
+print_r($releves);
 
 // for($i=1;$i<=30;$i++){
 //     $jsonData = generateRaspberryData();

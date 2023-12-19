@@ -1,3 +1,33 @@
+<?php
+//Importation des modules
+
+require('connect.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
+require('toolbox.php'); // Module toolbox qui contient les fonctions du script
+
+
+
+/*CONNECTION AVEC LA BDD MYSQL*/
+$BDD = connect_to('cube_meteo');
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------//
+
+$fiveDays = fiveDayBefore(); //on récupère les dates des 5 derniers jours
+
+$graphArray = []; //initialisation de l'array qui va recevoir les moyennes d'humidité par jours
+
+for($i = 0;$i < count($fiveDays);$i++){//On calcul l'humidité moyenne de chaques jour (itération de l'array des 5 dates)
+    $jour = $fiveDays[$i];
+    $averageCache = averageHumidity($BDD, 'releves',$jour);
+    $graphArray[] = $averageCache;
+}
+
+$lastDaysAvHum = averageFromArray($graphArray); //Humidité moyenne sur les 5 derniers jours
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -22,44 +52,44 @@
 
                 <tbody>
                     <tr>
-                        <th scope="row">Test date</th>
-                        <td style="--size: calc(<?php echo $todayAverage; ?> / 40)">
+                        <th scope="row"><?php echo $fiveDays[0]; ?></th>
+                        <td style="--size: calc(<?php echo $graphArray[0]; ?> / 100)">
                             <span class="data">
-                                <?php echo $todayAverage; ?>
+                            <?php echo $graphArray[0]."%"; ?>
                             </span>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
-                        <td style="--size: calc(20 / 40)">
-                            <span class="data">20</span>
+                        <th scope="row"><?php echo $fiveDays[1]; ?></th>
+                        <td style="--size: calc(<?php echo $graphArray[1]; ?>/ 100)">
+                            <span class="data"><?php echo $graphArray[1]."%"; ?></span>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
+                        <th scope="row"><?php echo $fiveDays[2]; ?></th>
 
-                        <td style="--size: calc(20 / 40)">
-                            <span class="data">20</span>
+                        <td style="--size: calc(<?php echo $graphArray[2]; ?>/ 100)">
+                            <span class="data"><?php echo $graphArray[2]."%"; ?></span>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
+                        <th scope="row"><?php echo $fiveDays[3]; ?></th>
 
-                        <td style="--size: calc(20 / 40)">
-                            <span class="data">20</span>
+                        <td style="--size: calc(<?php echo $graphArray[3]; ?> / 100)">
+                            <span class="data"><?php echo $graphArray[3]."%"; ?></span>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
+                        <th scope="row"><?php echo $fiveDays[4]; ?></th>
 
-                        <td style="--size: calc(20 / 40)">
-                            <span class="data">20</span>
+                        <td style="--size: calc(<?php echo $graphArray[4]; ?> / 100)">
+                            <span class="data"><?php echo $graphArray[4]."%"; ?></span>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <p>L’humidité moyenne sur les 5 derniers jours était de
-            <p class="averageHumidity">&nbspX</p>.</p>
+            <p>L’humidité moyenne sur les 5 derniers jours était de 
+            <p class="averageHumidity">&nbsp<?php echo $lastDaysAvHum."%"?></p>.</p>
             <img src="../images/rire.svg" />
 
         </div>
