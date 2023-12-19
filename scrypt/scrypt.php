@@ -6,8 +6,9 @@ function generateRaspberryData() {
 
     $data = [
         'messageId' => 1,
-        'deviceName' => 'Raspberry Pi Web Client',
+        'deviceName' => 'Sonde',
         'temperature' => $temperature,
+        'date'=> date('Y-m-d H:i:s'),
         'humidity' => $humidity
     ];
     return json_encode($data);
