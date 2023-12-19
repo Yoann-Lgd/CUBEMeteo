@@ -34,8 +34,7 @@ CREATE TABLE Sonde(
 
 CREATE TABLE Temperature(
         ID     Int  Auto_increment  NOT NULL ,
-        Date   Date NOT NULL ,
-        Heure  Varchar (50) NOT NULL ,
+        Date   Datetime NOT NULL ,
         Valeur Float NOT NULL
 	,CONSTRAINT Temperature_PK PRIMARY KEY (ID)
 )ENGINE=InnoDB;
@@ -47,8 +46,7 @@ CREATE TABLE Temperature(
 
 CREATE TABLE Humidite(
         ID     Int  Auto_increment  NOT NULL ,
-        Date   Date NOT NULL ,
-        Heure  Varchar (50) NOT NULL ,
+        Date   Datetime NOT NULL ,
         Valeur Float NOT NULL
 	,CONSTRAINT Humidite_PK PRIMARY KEY (ID)
 )ENGINE=InnoDB;
