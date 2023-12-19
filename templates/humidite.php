@@ -20,7 +20,7 @@
                 <div class="samedi">SA.</div>
                 <div class="dimanche">DI.</div>
             </div>
-            <p>L’humidité moyenne sur les 5 derniers jours était de <p class="averageHumidity">X</p>.</p>
+            <p>L’humidité moyenne sur les 5 derniers jours était de <p class="averageHumidity">&nbspX</p>.</p>
             
             <div class="accueil">
                 <a href="index.html"><img src="../images/maison 1.svg"></a>
