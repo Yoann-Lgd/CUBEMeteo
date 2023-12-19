@@ -6,13 +6,18 @@ require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet 
 
 $BDD = connect_to('cube_meteo');
 
-$h = date("h") + 1;
-echo date("Y-m-d ".$h.":i:s") . "              ";
+// $h = date("h") + 1;
+// echo date("Y-m-d ".$h.":i:s") . "              ";
 
 
-function averageTemp($BDD, $Table)
-{
+function averageFromArray($Array){
+    // retourne la moyenne d'un tableau passé en paramètre
+    $sum = array_sum($Array);
+    $averageData = $sum / count($Array);
+    return $averageData;
+}
 
+function fiveDayBefore(){
     /* On récupère le jour actuel et on lui retire 5 de 1 en 1 en stockant dans des variables pour récupérer les 5 derniers jours */
 
     $day = date("d");
@@ -24,22 +29,47 @@ function averageTemp($BDD, $Table)
     //docTest
     /*echo $day . "/".$minusOne."/".$minusTwo."/".$minusThree."/".$minusFour;*/
     //
+
+
     //Définir les dates à comparer:
-    $monthAndYear = date("m/Y");
-    $actualDay = $day . "/" . $monthAndYear;
-    $dayFour = $minusOne . "/" . $monthAndYear;
-    $dayThree = $minusTwo . "/" . $monthAndYear;
-    $dayTwo = $minusThree . "/" . $monthAndYear;
-    $dayOne = $minusFour . "/" . $monthAndYear;
+    $yearAndMonth = date("Y-m");
+    $actualDay =$yearAndMonth."-" . $day;
+    $dayFour = $yearAndMonth."-".$minusOne  ;
+    $dayThree = $yearAndMonth."-".$minusTwo  ;
+    $dayTwo = $yearAndMonth."-".$minusThree ;
+    $dayOne = $yearAndMonth."-".$minusFour ;
 
-    //echo $actualDay . "   /   " . $dayFour . "   /   " . $dayThree . "   /   " . $dayTwo . "   /   " . $dayOne;
+    //On les ajoutent à une liste que l'on va return
+    $arrayToReturn = [];
+    $arrayToReturn[] = $actualDay;
+    $arrayToReturn[] = $dayFour;
+    $arrayToReturn[] = $dayThree;
+    $arrayToReturn[] = $dayTwo;
+    $arrayToReturn[] = $dayOne;
 
-    $cursor = $BDD->query('SELECT Temperature FROM '.$Table.' WHERE Date IN '.$actualDay."'");
-    $data = $cursor->fetchAll(PDO::FETCH_ASSOC);
-    print_r($data);
+    return $arrayToReturn;
 }
 
-//averageTemp($BDD,'releves');
+function averageTemp($BDD, $Table)
+{
+    $fiveDay = fiveDayBefore();
+    $actualDay = $fiveDay[0][0];
+
+    $cursor = $BDD->query("SELECT Temperature FROM releves WHERE Date LIKE '%".$actualDay."%'");
+    $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
+    $length= count($data);
+    $today_sum = [];
+    for($i = 1;$i<$length;$i++){
+        $today_sum[] = $data[$i][0];
+        
+    }
+
+    echo averageFromArray($today_sum);
+}
+
+averageTemp($BDD,'releves');
+
+
 ?>
 
 
