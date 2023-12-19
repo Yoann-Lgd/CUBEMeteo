@@ -10,14 +10,16 @@ $BDD = connect_to('cube_meteo');
 // echo date("Y-m-d ".$h.":i:s") . "              ";
 
 
-function averageFromArray($Array){
+function averageFromArray($Array)
+{
     // retourne la moyenne d'un tableau passé en paramètre
     $sum = array_sum($Array);
     $averageData = $sum / count($Array);
     return $averageData;
 }
 
-function fiveDayBefore(){
+function fiveDayBefore()
+{
     /* On récupère le jour actuel et on lui retire 5 de 1 en 1 en stockant dans des variables pour récupérer les 5 derniers jours */
 
     $day = date("d");
@@ -33,11 +35,11 @@ function fiveDayBefore(){
 
     //Définir les dates à comparer:
     $yearAndMonth = date("Y-m");
-    $actualDay =$yearAndMonth."-" . $day;
-    $dayFour = $yearAndMonth."-".$minusOne  ;
-    $dayThree = $yearAndMonth."-".$minusTwo  ;
-    $dayTwo = $yearAndMonth."-".$minusThree ;
-    $dayOne = $yearAndMonth."-".$minusFour ;
+    $actualDay = $yearAndMonth . "-" . $day;
+    $dayFour = $yearAndMonth . "-" . $minusOne;
+    $dayThree = $yearAndMonth . "-" . $minusTwo;
+    $dayTwo = $yearAndMonth . "-" . $minusThree;
+    $dayOne = $yearAndMonth . "-" . $minusFour;
 
     //On les ajoutent à une liste que l'on va return
     $arrayToReturn = [];
@@ -55,23 +57,22 @@ function averageTemp($BDD, $Table)
     $fiveDay = fiveDayBefore();
     $actualDay = $fiveDay[0][0];
 
-    $cursor = $BDD->query("SELECT Temperature FROM releves WHERE Date LIKE '%".$actualDay."%'");
+    $cursor = $BDD->query("SELECT Temperature FROM releves WHERE Date LIKE '%" . $actualDay . "%'");
     $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
-    $length= count($data);
+    $length = count($data);
     $today_sum = [];
-    for($i = 1;$i<$length;$i++){
+    for ($i = 1; $i < $length; $i++) {
         $today_sum[] = $data[$i][0];
-        
+
     }
 
     echo averageFromArray($today_sum);
 }
 
-averageTemp($BDD,'releves');
+averageTemp($BDD, 'releves');
 
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -90,34 +91,49 @@ averageTemp($BDD,'releves');
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur les dernières heures.</p>
 
-            <table class="charts-css bar data-spacing-5">
+            <table class="charts-css bar data-spacing-5 show-labels show-data-on-hover">
                 <caption>
                     Température
                 </caption>
 
                 <tbody>
                     <tr>
-                        <th scope="bar">Test date</th>
-                        <td style="--size: calc(40 / 100)"></td>
+                        <th scope="row">Test date</th>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                            <span class="tooltip">data: 20<br />more info</span>
+                        </td>
                     </tr>
                     <tr>
-                        <th scope="bar"></th>
-                        <td style="--size: calc(60 / 100)"></td>
+                        <th scope="row"></th>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                            <span class="tooltip">data: 20<br />more info</span>
+                        </td>
                     </tr>
                     <tr>
-                        <th scope="bar"></th>
+                        <th scope="row"></th>
 
-                        <td style="--size: calc(75 / 100)"></td>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                            <span class="tooltip">data: 20<br />more info</span>
+                        </td>
                     </tr>
                     <tr>
-                        <th scope="bar"></th>
+                        <th scope="row"></th>
 
-                        <td style="--size: calc(90 / 100)"></td>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                            <span class="tooltip">data: 20<br />more info</span>
+                        </td>
                     </tr>
                     <tr>
-                        <th scope="bar"></th>
+                        <th scope="row"></th>
 
-                        <td style="--size: calc(100 / 100)"></td>
+                        <td style="--size: calc(20 / 40)">
+                            <span class="data">20</span>
+                            <span class="tooltip">data: 20<br />more info</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>

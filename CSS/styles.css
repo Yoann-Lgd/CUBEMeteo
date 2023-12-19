@@ -164,11 +164,30 @@ div.accueil {
 	border-radius: 100px;
 }
 
+tr {
+	display: table-cell;
+	vertical-align: inherit;
+	font-weight: bold;
+	text-align: -internal-center;
+	background-color: #ecf4d6;
+	font-family: "Montserrat", sans-serif;
+	color: #265073;
+}
+
+span {
+	color: #fff;
+	padding: 10px;
+	overflow: visible;
+}
+
 table.charts-css.bar {
+	display: flex;
+
 	width: 100%;
+	height: fit-content;
 	max-width: 500px;
 	/* margin: 0 auto; */
-	padding: 10px;
+	padding: 30px;
 	--color: #265073;
 }
 
@@ -186,7 +205,7 @@ table.charts-css.bar td {
 }
 
 table.charts-css.bar tbody th {
-	background-color: #fff;
+	background-color: #ecf4d6;
 	z-index: 1;
 }
 table.charts-css.bar tbody td {
