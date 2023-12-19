@@ -7,9 +7,6 @@ require('connect.php'); /*Fichier contenant la fonction connect_to() qui permet 
 $BDD = connect_to('cube_meteo');
 
 
-$cursor = $BDD->query('SELECT * FROM temperature');
-$dataToReturn = $cursor->fetchAll(PDO::FETCH_ASSOC);
-
 echo date("Y-m-d h:i:s") . "              ";
 
 
@@ -59,7 +56,7 @@ function averageTemp($BDD, $Table)
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur les dernières heures.</p>
 
-            <table class="charts-css row">
+            <table class="charts-css column">
 
                 <caption> Température </caption>
 

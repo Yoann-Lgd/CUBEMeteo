@@ -1,7 +1,6 @@
 <?php
 try {
-    $BDD = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', 'root');
-    echo 'Connexion réussie à la base de données';
+    $BDD = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', '');
 
 
 } catch (PDOException $erreur) {

@@ -41,7 +41,7 @@ function insertSonde($nom) {
     return $result;
 }
 
-// insertSonde($deviceName);
+insertSonde($deviceName);
 
 // Fonction pour récupérer la sonde selon son id
 function getSondeById($idSonde){
@@ -78,5 +78,5 @@ function updateSonde($id, $nom) {
     return $result;
 }
 
-$sonde = updateSonde(1, "jj");
+//$sonde = updateSonde(1, "jj");
 ?>
