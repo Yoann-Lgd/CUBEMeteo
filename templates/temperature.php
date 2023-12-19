@@ -56,39 +56,40 @@ function averageTemp($BDD, $Table)
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur les dernières heures.</p>
 
-            <table class="charts-css column">
-
-                <caption> Température </caption>
+            <table class="charts-css bar data-spacing-5">
+                <caption>
+                    Température
+                </caption>
 
                 <tbody>
                     <tr>
-                        <th scope="row"> Test date</th>
-                        <td style="--size: calc( 40 / 100 )"> </td>
+                        <th scope="bar">Test date</th>
+                        <td style="--size: calc(40 / 100)"></td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
-                        <td style="--size: calc( 60 / 100 )"> </td>
+                        <th scope="bar"></th>
+                        <td style="--size: calc(60 / 100)"></td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
+                        <th scope="bar"></th>
 
-                        <td style="--size: calc( 75 / 100 )"> </td>
+                        <td style="--size: calc(75 / 100)"></td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
+                        <th scope="bar"></th>
 
-                        <td style="--size: calc( 90 / 100 )"> </td>
+                        <td style="--size: calc(90 / 100)"></td>
                     </tr>
                     <tr>
-                        <th scope="row"></th>
+                        <th scope="bar"></th>
 
-                        <td style="--size: calc( 100 / 100 )"> </td>
+                        <td style="--size: calc(100 / 100)"></td>
                     </tr>
                 </tbody>
-
             </table>
 
             <p>La température moyenne sur les 5 derniers jours était de&nbspX.</p>
+            <img src="../images/rire.svg" />
         </div>
     </div>
 
