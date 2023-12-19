@@ -113,7 +113,7 @@ div.mainTemperature {
 	border-radius: 24px;
 	padding: 10px;
 	display: flex;
-	width: 80%;
+	width: fit-content;
 	align-items: center;
 	justify-content: center;
 	margin-top: 20px;
