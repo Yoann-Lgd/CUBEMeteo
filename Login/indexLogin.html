@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<!-- importer le fichier de style -->
+		<link
+			rel="stylesheet"
+			href="styleLogin.css"
+			media="screen"
+			type="text/css"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+
+	<body>
+		<div id="mainConnexion">
+			<div>
+				<!-- zone de connexion -->
+
+				<form action="verification.php" method="POST">
+					<h1>Connexion</h1>
+
+					<label><b>Nom d'utilisateur</b></label>
+					<input
+						type="text"
+						placeholder="Entrer le nom d'utilisateur"
+						name="username"
+						required
+					/>
+
+					<!-- The code you provided is creating a password input field in a form. -->
+					<label><b>Mot de passe</b></label>
+					<input
+						type="password"
+						placeholder="Entrer le mot de passe"
+						name="password"
+						required
+					/>
+
+					<input type="submit" id="submit" value="Je me connecte" />
+
+					<!-- zone du PHP -->
+					<!-- fin de zone du PHP -->
+				</form>
+			</div>
+		</div>
+		<div class="accueil">
+			<a href="index.html"><img src="../images/maison.svg" /></a>
+		</div>
+	</body>
+</html>
