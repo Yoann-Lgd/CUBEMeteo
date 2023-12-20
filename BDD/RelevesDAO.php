@@ -1,6 +1,7 @@
 <?php
 
-include_once 'DbConnect.php';
+require('DbConnect.php');
+
 
 function insertReleves($date, $temperature, $humidite, $idSonde) {
     global $db;

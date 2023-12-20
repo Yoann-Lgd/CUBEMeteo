@@ -1,6 +1,6 @@
 <?php
 
-include_once 'DbConnect.php';
+require('DbConnect.php');
 
 // Fonction pour insérer une Sonde
 function insertSonde($nom) {
