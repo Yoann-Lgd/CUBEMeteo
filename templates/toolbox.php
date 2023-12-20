@@ -8,8 +8,12 @@ function averageFromArray($Array)
 {
     // retourne la moyenne d'un tableau passé en paramètre
     $sum = array_sum($Array);
-    $averageData = $sum / count($Array);
-    return $averageData;
+    if($Array != []){
+        $averageData = $sum / count($Array);
+        return $averageData;
+    }
+
+    return ;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------//
