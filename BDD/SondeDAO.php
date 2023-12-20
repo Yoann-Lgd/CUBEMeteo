@@ -2,58 +2,53 @@
 
 require('DbConnect.php');
 
-// Fonction pour insérer une Sonde
-function insertSonde($nom) {
-    global $db;
+    // Fonction pour insérer une Sonde
+    function insertSonde($nom) {
+        global $db;
 
-    $query = "INSERT INTO Sonde (Nom) VALUES (:nom)";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':nom', $nom);
+        $query = "INSERT INTO Sonde (Nom) VALUES (:nom)";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':nom', $nom);
 
-    $result = $stmt->execute();
+        $result = $stmt->execute();
 
-    if ($result) {
-        echo 'Insertion de la nouvelle sonde réussie.';
-    } else {
-        echo 'Échec de l\'insertion.';
+        return $result;
     }
 
-    return $result;
-}
+    // Fonction pour récupérer la sonde selon son id
+    function getAllSonde() {
+        global $db;
 
-//Fonction pour récupérer la sonde selon son id
-function getSondeById($idSonde){
-    global $db;
+        $sondeQuery = "SELECT * FROM Sonde";
+        $sondeStmt = $db->prepare($sondeQuery);
+        $sondeStmt->execute();
 
-    $sondeQuery = "SELECT * FROM Sonde WHERE ID = :id";
-    $sondeStmt = $db->prepare($sondeQuery);
-    $sondeStmt->bindParam(':id', $idSonde);
-    $sondeStmt->execute();
+        return $sondeStmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    // Fonction pour récupérer la sonde selon son id
+    function getSondeById($idSonde) {
+        global $db;
 
-    return $sondeStmt->fetch(PDO::FETCH_ASSOC);
-}
+        $sondeQuery = "SELECT * FROM Sonde WHERE ID = :id";
+        $sondeStmt = $db->prepare($sondeQuery);
+        $sondeStmt->bindParam(':id', $idSonde);
+        $sondeStmt->execute();
 
-// Fonction pour mettre à jour la sonde selon son id
-function updateSonde($id, $nom) {
-    global $db;
-
-    $query = "UPDATE Sonde SET nom = :nom WHERE ID = :id";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':nom', $nom);
-    $stmt->bindParam(':id', $id);
-
-    $result = $stmt->execute();
-
-    if ($result) {
-        echo 'Mise à jour de la sonde réussie.';
-    } else {
-        echo 'Échec de la mise à jour.';
+        return $sondeStmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    return $result;
-}
+    // Fonction pour mettre à jour la sonde selon son id
+    function updateSonde($id, $nom) {
+        global $db;
 
-// insertSonde($deviceName);
-// $sonde = getSondeById(1);
-// print_r($sonde);
-// $sonde = updateSonde(1, "jj");
+        $query = "UPDATE Sonde SET nom = :nom WHERE ID = :id";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':id', $id);
+
+        $result = $stmt->execute();
+
+        return $result;
+    }
+
