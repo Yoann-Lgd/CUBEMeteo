@@ -60,6 +60,7 @@ switch ($method) {
         //     http_response_code(405);
         //     break;
 }
+echo json_encode($result);
 
 
 // $jsonData = generateRaspberryData();
@@ -115,4 +116,4 @@ if ($dataList !== null) {
 }
 
 
-feedRelevesDb();
+// feedRelevesDb();
