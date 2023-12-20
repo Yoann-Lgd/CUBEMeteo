@@ -24,8 +24,18 @@ for ($i = 0; $i < count($fiveDays); $i++) { //On calcul la température moyenne 
     $graphArray[] = $averageCache;
 }
 
-$lastDaysAvTemp = averageFromArray($graphArray) //température moyenne sur les 5 derniers jours
-    ?>
+$lastDaysAvTemp = averageFromArray($graphArray); //température moyenne sur les 5 derniers jours
+
+if (isset($_GET['combo'])) {              //test si l'entrée est faite par l'utilisateur
+    $date_input = $_GET['combo'];
+    $answer = searchTemp($BDD, $date_input, 'releves');
+} else {
+    $answer = "Choisissez une date";
+}
+
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -58,22 +68,26 @@ $lastDaysAvTemp = averageFromArray($graphArray) //température moyenne sur les 5
 <body>
     <div class="mainTemperature">
         <div class="temperature">
-            <h2>Sélectionnez une heure :</h2>
-            <form>
-                <select name="heure" onchange="afficherTemperature(this.value)">
-                    <option value="">Choisissez une heure :</option>
-                    <option value="08:00:00">08:00</option>
-                    <option value="12:00:00">12:00</option>
-                    <option value="16:00:00">16:00</option>
+            <h2>Sélectionnez une date :</h2>
+            <form method="get">
+                <select name="combo">
+                    <?php
+                    $date_array = dateUnique($BDD, 'Date');
+                    for ($i = 0; $i <= count($date_array) + 1; $i++) {
+                        echo "<option>" . $date_array[$i] . "</option>";
+                    } ?>
                     <!-- Ajoutez d'autres options selon vos besoins -->
                 </select>
+                <input type='submit' value="Chercher">
             </form>
             <br />
-            <div id="temperature"><b>La température sera affichée ici.</b></div>
+            <div id="temperature"><b>
+                    <?php echo $answer; ?>
+                </b></div>
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur les dernières heures.</p>
 
-            <table class="charts-css bar data-spacing-5 show-labels show-data-on-hover">
+            <table class="charts-css line data-spacing-5 show-labels show-data-on-hover">
                 <caption>
                     Température
                 </caption>
