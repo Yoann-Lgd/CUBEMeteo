@@ -119,6 +119,8 @@ function getSelectReleves($idReleves) {
 $releves = getSelectReleves(1);
 print_r($releves);
 
+//Boucle permettant de créer/insérer un jeu de données sur les 5 derniers jours
+
 // for($i=1;$i<=30;$i++){
 //     $jsonData = generateRaspberryData();
 //     if ($jsonData !== null) {
@@ -137,6 +139,86 @@ print_r($releves);
 //         echo "Erreur provenant du scrypt Raspberry";
 //     }
 //     insertReleves($dateRelevee, $temperature, $humidite, 1);
+
+//     //-------------------------------------------------------------------//
+//     $jsonData = generateRaspberryData1();
+//     if ($jsonData !== null) {
+//         $data = json_decode($jsonData, true);
+
+//         if ($data !== null) {
+//             $deviceId = $data['id'];
+//             $deviceName = $data['deviceName'];
+//             $temperature = $data['temperature'];
+//             $dateRelevee = $data['date'];
+//             $humidite = $data['humidity'];
+//         } else {
+//             echo "Erreur lors du décodage des données JSON.";
+//         }
+//     } else {
+//         echo "Erreur provenant du scrypt Raspberry";
+//     }
+//     insertReleves($dateRelevee, $temperature, $humidite, 1);
+    
+
+//     //-------------------------------------------------------------------//
+//     $jsonData = generateRaspberryData2();
+//     if ($jsonData !== null) {
+//         $data = json_decode($jsonData, true);
+
+//         if ($data !== null) {
+//             $deviceId = $data['id'];
+//             $deviceName = $data['deviceName'];
+//             $temperature = $data['temperature'];
+//             $dateRelevee = $data['date'];
+//             $humidite = $data['humidity'];
+//         } else {
+//             echo "Erreur lors du décodage des données JSON.";
+//         }
+//     } else {
+//         echo "Erreur provenant du scrypt Raspberry";
+//     }
+//     insertReleves($dateRelevee, $temperature, $humidite, 1);
+
+//     //-------------------------------------------------------------------//
+//     $jsonData = generateRaspberryData3();
+//     if ($jsonData !== null) {
+//         $data = json_decode($jsonData, true);
+
+//         if ($data !== null) {
+//             $deviceId = $data['id'];
+//             $deviceName = $data['deviceName'];
+//             $temperature = $data['temperature'];
+//             $dateRelevee = $data['date'];
+//             $humidite = $data['humidity'];
+//         } else {
+//             echo "Erreur lors du décodage des données JSON.";
+//         }
+//     } else {
+//         echo "Erreur provenant du scrypt Raspberry";
+//     }
+//     insertReleves($dateRelevee, $temperature, $humidite, 1);
+    
+//     //-------------------------------------------------------------------//
+//     $jsonData = generateRaspberryData4();
+//     if ($jsonData !== null) {
+//         $data = json_decode($jsonData, true);
+
+//         if ($data !== null) {
+//             $deviceId = $data['id'];
+//             $deviceName = $data['deviceName'];
+//             $temperature = $data['temperature'];
+//             $dateRelevee = $data['date'];
+//             $humidite = $data['humidity'];
+//         } else {
+//             echo "Erreur lors du décodage des données JSON.";
+//         }
+//     } else {
+//         echo "Erreur provenant du scrypt Raspberry";
+//     }
+//     insertReleves($dateRelevee, $temperature, $humidite, 1);
+    
 // }
+    
+
 
 ?>
