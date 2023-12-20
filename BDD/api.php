@@ -102,7 +102,7 @@ function insertReleves($date, $temperature, $humidite, $idSonde) {
 
 }
 
-insertReleves($dateRelevee, $temperature, $humidite, 1);
+// insertReleves($dateRelevee, $temperature, $humidite, 1);
 
 function getSelectReleves($idReleves) {
     global $BDD;
@@ -116,8 +116,11 @@ function getSelectReleves($idReleves) {
     return $stmtReleves->fetch(PDO::FETCH_ASSOC);
 }
 
-$releves = getSelectReleves(1);
-print_r($releves);
+
+
+
+// $releves = getSelectReleves(1);
+// print_r($releves);
 
 //Boucle permettant de créer/insérer un jeu de données sur les 5 derniers jours
 
@@ -218,7 +221,6 @@ print_r($releves);
 //     insertReleves($dateRelevee, $temperature, $humidite, 1);
     
 // }
-    
 
 
 ?>

@@ -34,6 +34,39 @@ function getSelectReleves($idReleves) {
     return $stmtReleves->fetch(PDO::FETCH_ASSOC);
 }
 
+// Fonction pour récupérer les relevés entre une date de début et une date de fin pour une sonde spécifique
+function getRelevesBetweenDates($idSonde, $dateDebut, $dateFin) {
+    global $db;
+
+    $query = "SELECT * FROM Releves WHERE ID_Sonde = :idSonde AND Date BETWEEN :dateDebut AND :dateFin";
+
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':idSonde', $idSonde);
+    $stmt->bindParam(':dateDebut', $dateDebut);
+    $stmt->bindParam(':dateFin', $dateFin);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Exemple d'utilisation
+$idSonde = 1; // ID de la sonde
+$dateDebut = '2023-12-17 00:00:00'; // Date de début
+$dateFin = '2023-12-20 23:59:59'; // Date de fin
+
+$releves = getRelevesBetweenDates($idSonde, $dateDebut, $dateFin);
+
+// Traiter les relevés récupérés
+foreach ($releves as $releve) {
+    $date = $releve['Date'];
+    $temperature = $releve['Temperature'];
+    $humidite = $releve['Humidite'];
+
+    echo "Date: $date, Température: $temperature, Humidité: $humidite<br>";
+}
+
+
 // $releves = getSelectReleves(1);
 // print_r($releves);
 // insertReleves($dateRelevee, $temperature, $humidite, 1);
