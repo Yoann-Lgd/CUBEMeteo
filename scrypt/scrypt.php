@@ -23,10 +23,10 @@ function generateDataForFiveDays() {
     $dataList = [];
 
     while ($dateDeDepart >= $endDate) {
-        $temperature = rand(0, 40) + (rand(0, 90) / 100);
+        $temperature = rand(10, 35) + (rand(0, 90) / 100);
         $humidite = rand(0, 100);
         $date = date('Y-m-d H:i:s', $dateDeDepart);
-
+        
         $data = [
             'id' => 1,
             'deviceName' => 'Sonde',
@@ -42,8 +42,6 @@ function generateDataForFiveDays() {
 
     return json_encode($dataList);
 }
-
-echo generateDataForFiveDays();
 
 
 

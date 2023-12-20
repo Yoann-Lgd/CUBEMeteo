@@ -1,8 +1,8 @@
 <?php
 
 
-include_once '../scrypt/scrypt.php';
-include_once '../templates/connect.php';
+require('../scrypt/scrypt.php');
+require('../templates/connect.php');
 
 $jsonData = generateRaspberryData();
 

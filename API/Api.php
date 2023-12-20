@@ -1,8 +1,8 @@
 <?php
 
-include_once '../BDD/SondeDAO.php';
-include_once '../BDD/RelevesDAO.php';
-include_once '../scrypt/scrypt.php';
+require('../BDD/SondeDAO.php');
+require('../BDD/RelevesDAO.php');
+require('../scrypt/scrypt.php');
 
 
 // $jsonData = generateRaspberryData();
