@@ -1,53 +1,39 @@
 <?php
 //Importation des modules
 
-require('connect.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
-require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 
+require('toolbox.php'); // Module toolbox qui contient les fonctions du script
+require('C:\wamp64\www\cubemeteo\BDD\RelevesDAO.php');// Module de traitement de données
 
 
 /*CONNECTION AVEC LA BDD MYSQL*/
 $BDD = connect_to('cube_meteo');
 
+$date_debut = date('Y-m-d');
+$date_fin = date('Y-m-d');
 
-
-
-
-$fiveDays = fiveDayBefore(); //on récupère les dates des 5 derniers jours
-
-
-$graphArray = []; //initialisation de l'array qui va recevoir les moyennes des températures par jours
-
-for ($i = 0; $i < count($fiveDays); $i++) { //On calcul la température moyenne de chaques jour (itération de l'array des 5 dates)
-    $jour = $fiveDays[$i];
-    $averageCache = averageTemp($BDD, 'releves', $jour);
-    $graphArray[] = $averageCache;
+if(isset($_GET['combo1'])){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
+    $date_debut = $_GET['combo1'];
+    if(isset($_GET['combo2'])){ 
+        $date_fin = $_GET['combo2'];
+    
+    }
 }
 
-$lastDaysAvTemp = averageFromArray($graphArray); //température moyenne sur les 5 derniers jours
 
-if(isset($_GET['combo'])){              //test si l'entrée est faite par l'utilisateur
-    $date_input = $_GET['combo'];    
-    $answer = searchTemp($BDD,$date_input,'releves');
-    $cursor = $BDD->query("SELECT Temperature FROM releves WHERE Date LIKE '%" . $date_input . "%'");
-    $data_temp = $cursor->fetchAll(PDO::FETCH_DEFAULT);;
-
-    $cursor = $BDD->query("SELECT Date FROM releves WHERE Date LIKE '%" . $date_input . "%'");
-    $data_hour = $cursor->fetchAll(PDO::FETCH_DEFAULT);;
-
-    $title_point = " ";
-    // if(count($data_temp)<10){
-    //     $title_point = substr($data_hour[$i][0],-8);
-    // } 
-    
-    
-} else {
-    $answer = "Choisissez une date";
-    $data_temp = [[0,0,0,0,0],[0,0,0,0,0]];
-    $date_input = "";
-    $data_hour = [[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0]];
+$array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
+$array_temp = [];
+$heure = [];
+foreach($array_releves as $releves){ //on récupère toutes les températures dans une array et toutes les heures dans une autre array
+    $temperature = $releves['Temperature'];
+    $array_temp[] = $temperature;
+    $h = $releves['Date'];
+    $heure[] = substr($h,-8);
 }
+$answer = "Voici le graphique des températures relevés entre le ".$date_debut." et le ".$date_fin; //phrase de synthèse
 
+
+$lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moyenne sur la période donnée
 
 ?>
 
@@ -67,7 +53,17 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
         <div class="temperature">
             <h2>Sélectionnez une heure :</h2>
             <form>
-                <select name="combo" >
+                <select name="combo1" >
+                    <option value="">Tout</option>
+                    <?php
+                    $date_array = dateUniqueReverse($BDD,'Date');
+                    for($i=0;$i <= count($date_array)+1;$i++){
+                    echo "<option>".$date_array[$i]."</option>";
+                    }
+                    ?>
+                    <!-- Ajoutez d'autres options selon vos besoins -->
+                </select>
+                <select name="combo2" >
                     <option value="">Tout</option>
                     <?php
                     $date_array = dateUnique($BDD,'Date');
@@ -77,6 +73,7 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                     ?>
                     <!-- Ajoutez d'autres options selon vos besoins -->
                 </select>
+
                 <input type='submit' value='Afficher'>
             </form>
             <br />
@@ -84,7 +81,7 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur les dernières heures.</p>
 
-            <table class="charts-css line show-primary-axis show-2-secondary-axes show-data-axes show-labels  show-heading">
+            <table class="charts-css line show-primary-axis show-10-secondary-axes  show-labels  show-heading">
                 <caption>
                     Température
                 </caption>
@@ -92,12 +89,13 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                 <tbody>
                     <?php
                     $cpt = 0;
-                    for($i = 0;$i<(count($data_temp)-1);$i++){
+                    for($i = 0;$i<(count($array_temp)-1);$i++){
                         //pour tout les points
                         $cpt++;
-                        if(count($data_hour)>=15){//si il y a moins de 15pts à placer
-                            if($cpt == 2){//si 2 itérations ont été faites :
-                                $point_name = $data_temp[$i][0];
+                        
+                        if(count($heure)>=30){//si il y a moins de 15pts à placer
+                            if($cpt == 7){//si 2 itérations ont été faites :
+                                $point_name = "";
                                 $title_point ="";
                                 $cpt = 0;
                             }else{
@@ -105,13 +103,18 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                                 $point_name = "";
                             }
 
-                        }elseif(count($data_hour)<=10){
+                        }elseif(count($heure)>=10){
                             
-                            $title_point = substr($data_hour[$i][0],-8);
-                            $point_name = $data_temp[$i][0];
+                            $title_point = "";
+                            $point_name = $array_temp[$i];
                         }
-                        $start = "0.". (int)$data_temp[$i][0];
-                        $end = "0.". (int)$data_temp[$i+1][0];
+                        elseif(count($heure)<=10){
+                            
+                            $title_point = $heure[$i];
+                            $point_name = $array_temp[$i];
+                        }
+                        $start = "0.". (int)$array_temp[$i];
+                        $end = "0.". (int)$array_temp[$i+1];
                         echo('
                         <tr>
                         <th scope = "row">'.$title_point.'</th>
@@ -126,10 +129,11 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                 </tbody>
             </table>
 
-            <p>La température moyenne sur les 5 derniers jours était de&nbsp
-                <?php echo $lastDaysAvTemp . "°C"; ?>.
+            <p>
+                <?php echo "La température moyenne entre ces dates est de ".$lastDaysAvTemp . "°C"; ?>.
             </p>
-            <img src="../images/rire.svg" />
+            <?php picto($lastDaysAvTemp)?>
+            <!-- <img src="../images/rire.svg" /> -->
         </div>
     </div>
 

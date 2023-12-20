@@ -107,6 +107,19 @@ function dateUnique($BDD,$Table){
 
 //----------------------------------------------------------------------------------------------------------------------------------------//
 
+function dateUniqueReverse($BDD,$Table){
+    //retourne la liste des dates uniques d'une table dans l'ordre décroissant
+    $date_array = [];
+    $cursor = $BDD->query("SELECT DISTINCT LEFT($Table,10) FROM releves ORDER BY $Table ASC");
+    $data_extract = $cursor->fetchAll(PDO::FETCH_ASSOC);
+    for($i = 0;$i < count($data_extract);$i++){
+        $date_array[] = $data_extract[$i]["LEFT(Date,10)"];
+    }
+    return $date_array;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------//
+
 function searchTemp($BDD,$date,$Table){
     $resTemp = averageTemp($BDD,'releves',$date);
     $answer = "Température moyenne du ".$date." : ".$resTemp."°C";
@@ -124,8 +137,13 @@ function searchHum($BDD,$date,$Table){
 //----------------------------------------------------------------------------------------------------------------------------------------//
 
 function picto($data){
-    if($data > 20){
-        echo "test";
+    $heatWarning = '<img width="80" height="80" src="https://img.icons8.com/office/80/thermometer.png" alt="thermometer"/>';
+    $coldWarning = '<img width="80" height="80" src="https://img.icons8.com/ultraviolet/80/thermometer.png" alt="thermometer"/>';
+    if($data >= 24){
+        echo $heatWarning;
+    }
+    if($data<=23){
+        echo $coldWarning;
     }
 }
 
