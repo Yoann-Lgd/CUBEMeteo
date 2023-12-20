@@ -17,12 +17,12 @@ function generateRaspberryData() {
 }
 
 function generateDataForFiveDays() {
-    $dateDeDepart = strtotime('actuellement');
-    $endDate = strtotime('-5 jours');
+    $dateDeDepart = strtotime('now');
+    $endDate = strtotime('-5 days');
 
     $dataList = [];
 
-    while ($dateDeDepart <= $endDate) {
+    while ($dateDeDepart >= $endDate) {
         $temperature = rand(0, 40) + (rand(0, 90) / 100);
         $humidite = rand(0, 100);
         $date = date('Y-m-d H:i:s', $dateDeDepart);
@@ -37,11 +37,14 @@ function generateDataForFiveDays() {
 
         $dataList[] = $data;
 
-        $dateDeDepart = strtotime('+30 minutes', $dateDeDepart);
+        $dateDeDepart = strtotime('-30 minutes', $dateDeDepart);
     }
 
     return json_encode($dataList);
 }
+
+echo generateDataForFiveDays();
+
 
 
 // function raspberryPeriodically() {

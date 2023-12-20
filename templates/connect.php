@@ -1,6 +1,6 @@
 <?php
 try {
-    $BDD = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', '');
+    $BDD = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', 'root');
 
 
 } catch (PDOException $erreur) {
