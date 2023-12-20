@@ -25,9 +25,9 @@ for ($i = 0; $i < count($fiveDays); $i++) { //On calcul la température moyenne 
 
 $lastDaysAvTemp = averageFromArray($graphArray); //température moyenne sur les 5 derniers jours
 
-if(isset($_GET['combo'])){              //test si l'entrée est faite par l'utilisateur
+if (isset($_GET['combo'])) {              //test si l'entrée est faite par l'utilisateur
     $date_input = $_GET['combo'];
-    $answer = searchTemp($BDD,$date_input,'releves');
+    $answer = searchTemp($BDD, $date_input, 'releves');
 } else {
     $answer = "Choisissez une date";
 }
@@ -53,21 +53,23 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
             <h2>Sélectionnez une date :</h2>
             <form method="get">
                 <select name="combo">
-                <?php
-                    $date_array = dateUnique($BDD,'Date');
-                    for($i=0;$i <= count($date_array)+1;$i++){
-                    echo "<option>".$date_array[$i]."</option>";
-                    }?>
+                    <?php
+                    $date_array = dateUnique($BDD, 'Date');
+                    for ($i = 0; $i <= count($date_array) + 1; $i++) {
+                        echo "<option>" . $date_array[$i] . "</option>";
+                    } ?>
                     <!-- Ajoutez d'autres options selon vos besoins -->
                 </select>
-                <input type='submit' value = "Chercher">
+                <input type='submit' value="Chercher">
             </form>
             <br />
-            <div id="temperature"><b><?php echo $answer; ?></b></div>
+            <div id="temperature"><b>
+                    <?php echo $answer; ?>
+                </b></div>
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur les derniers jours.</p>
 
-            <table class="charts-css bar data-spacing-5 show-labels show-data-on-hover">
+            <table class="charts-css line show-labels show-data-on-hover">
                 <caption>
                     Température
                 </caption>
