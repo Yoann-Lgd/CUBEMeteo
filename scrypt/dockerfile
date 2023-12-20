@@ -1,0 +1,12 @@
+FROM php:7.4-apache
+
+WORKDIR /var/www/html
+
+COPY scrypt.php . 
+RUN chmod 644 scrypt.php
+
+RUN echo "DirectoryIndex scrypt.php" >> /etc/apache2/apache2.conf
+
+EXPOSE 8080
+
+CMD ["apache2-foreground"]
