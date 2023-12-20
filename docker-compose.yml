@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  # MySQL service for the database
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: your_database
+      MYSQL_USER: your_user
+      MYSQL_PASSWORD: your_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  # PHP/Apache service for your script
+  php_apache:
+    image: php:7.4-apache
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./your_project:/var/www/html
+    depends_on:
+      - mysql
+
+  # Additional service for your project files, if needed
+  project_files:
+    image: busybox
+    restart: always
+    volumes:
+      - ./your_project:/app

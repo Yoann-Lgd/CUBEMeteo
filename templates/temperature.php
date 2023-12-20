@@ -10,7 +10,8 @@ require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 $BDD = connect_to('cube_meteo');
 
 
-//----------------------------------------------------------------------------------------//
+
+
 
 $fiveDays = fiveDayBefore(); //on récupère les dates des 5 derniers jours
 
@@ -23,8 +24,32 @@ for ($i = 0; $i < count($fiveDays); $i++) { //On calcul la température moyenne 
     $graphArray[] = $averageCache;
 }
 
-$lastDaysAvTemp = averageFromArray($graphArray) //température moyenne sur les 5 derniers jours
-    ?>
+$lastDaysAvTemp = averageFromArray($graphArray); //température moyenne sur les 5 derniers jours
+
+if(isset($_GET['combo'])){              //test si l'entrée est faite par l'utilisateur
+    $date_input = $_GET['combo'];    
+    $answer = searchTemp($BDD,$date_input,'releves');
+    $cursor = $BDD->query("SELECT Temperature FROM releves WHERE Date LIKE '%" . $date_input . "%'");
+    $data_temp = $cursor->fetchAll(PDO::FETCH_DEFAULT);;
+
+    $cursor = $BDD->query("SELECT Date FROM releves WHERE Date LIKE '%" . $date_input . "%'");
+    $data_hour = $cursor->fetchAll(PDO::FETCH_DEFAULT);;
+
+    $title_point = " ";
+    // if(count($data_temp)<10){
+    //     $title_point = substr($data_hour[$i][0],-8);
+    // } 
+    
+    
+} else {
+    $answer = "Choisissez une date";
+    $data_temp = [[0,0,0,0,0],[0,0,0,0,0]];
+    $date_input = "";
+    $data_hour = [[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0]];
+}
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -35,23 +60,6 @@ $lastDaysAvTemp = averageFromArray($graphArray) //température moyenne sur les 5
     <link rel="stylesheet" href="../CSS/styles.css" />
     <link rel="stylesheet" href="../CSS/charts.min.css" />
     <title>Température</title>
-    <script>			function afficherTemperature(str) {
-            if (str == "") {
-                document.getElementById("temperature").innerHTML = "";
-                return;
-            } else {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("temperature").innerHTML =
-                            this.responseText;
-                    }
-                };
-                xmlhttp.open("GET", "get_temperature.php?q=" + str, true);
-                xmlhttp.send();
-            }
-        }
-    </script>
 </head>
 
 <body>
@@ -59,78 +67,61 @@ $lastDaysAvTemp = averageFromArray($graphArray) //température moyenne sur les 5
         <div class="temperature">
             <h2>Sélectionnez une heure :</h2>
             <form>
-                <select name="heure" onchange="afficherTemperature(this.value)">
-                    <option value="">Choisissez une heure :</option>
-                    <option value="08:00:00">08:00</option>
-                    <option value="12:00:00">12:00</option>
-                    <option value="16:00:00">16:00</option>
+                <select name="combo" >
+                    <option value="">Tout</option>
+                    <?php
+                    $date_array = dateUnique($BDD,'Date');
+                    for($i=0;$i <= count($date_array)+1;$i++){
+                    echo "<option>".$date_array[$i]."</option>";
+                    }
+                    ?>
                     <!-- Ajoutez d'autres options selon vos besoins -->
                 </select>
+                <input type='submit' value='Afficher'>
             </form>
             <br />
-            <div id="temperature"><b>La température sera affichée ici.</b></div>
+            <div id="temperature"><b><?php echo $answer;?></b></div>
             <h1>Quelle température:</h1>
-            <p>Jettez un oeil à la température sur les derniers jours.</p>
+            <p>Jettez un oeil à la température sur les dernières heures.</p>
 
-            <table class="charts-css bar data-spacing-5 show-labels show-data-on-hover">
+            <table class="charts-css line show-primary-axis show-2-secondary-axes show-labels  show-heading">
                 <caption>
                     Température
                 </caption>
 
                 <tbody>
-                    <tr>
-                        <th scope="row">
-                            <?php echo $fiveDays[0]; ?>
-                        </th>
-                        <td style="--size: calc(<?php echo $graphArray[0]; ?> / 40)">
-                            <span class="data">
-                                <?php echo $graphArray[0] . "°C"; ?>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <?php echo $fiveDays[1]; ?>
-                        </th>
-                        <td style="--size: calc(<?php echo $graphArray[1]; ?>/ 40)">
-                            <span class="data">
-                                <?php echo $graphArray[1] . "°C"; ?>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <?php echo $fiveDays[2]; ?>
-                        </th>
+                    <?php
+                    $cpt = 0;
+                    for($i = 0;$i<(count($data_temp)-1);$i++){
+                        $cpt++;
+                        if(count($data_hour)>10){
+                            if($cpt == 10){
+                                $point_name = $data_temp[$i][0];
+                                $title_point ="";
+                                $cpt = 0;
+                            }else{
+                                $title_point = "";
+                                $point_name = "";
+                            }
 
-                        <td style="--size: calc(<?php echo $graphArray[2]; ?> / 40)">
-                            <span class="data">
-                                <?php echo $graphArray[2] . "°C"; ?>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <?php echo $fiveDays[3]; ?>
-                        </th>
+                        }else{
+                            
+                            $title_point = substr($data_hour[$i][0],-8);
+                            $point_name = $data_temp[$i][0];
+                        }
+                        $start = "0.". (int)$data_temp[$i][0];
+                        $end = "0.". (int)$data_temp[$i+1][0];
+                        echo('
+                        <tr>
+                        <th scope = "row">'.$title_point.'</th>
+                        <td style="--start: '.$start.'; --end: '.$end.';">'.$point_name.'</td>
+                        </tr>
+                        
+                        ');
 
-                        <td style="--size: calc(<?php echo $graphArray[3]; ?> / 40)">
-                            <span class="data">
-                                <?php echo $graphArray[3] . "°C"; ?>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <?php echo $fiveDays[4]; ?>
-                        </th>
+                    }
 
-                        <td style="--size: calc(<?php echo $graphArray[4]; ?> / 40)">
-                            <span class="data">
-                                <?php echo $graphArray[4] . "°C"; ?>
-                            </span>
-                        </td>
-                    </tr>
+                    ?>
                 </tbody>
             </table>
 
