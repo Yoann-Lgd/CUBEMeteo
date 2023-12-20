@@ -50,21 +50,21 @@ function getRelevesBetweenDates($idSonde, $dateDebut, $dateFin) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Exemple d'utilisation
-$idSonde = 1; // ID de la sonde
-$dateDebut = '2023-12-17 00:00:00'; // Date de début
-$dateFin = '2023-12-20 23:59:59'; // Date de fin
+// // Exemple d'utilisation
+// $idSonde = 1; // ID de la sonde
+// $dateDebut = '2023-12-17 00:00:00'; // Date de début
+// $dateFin = '2023-12-20 23:59:59'; // Date de fin
 
-$releves = getRelevesBetweenDates($idSonde, $dateDebut, $dateFin);
+// $releves = getRelevesBetweenDates($idSonde, $dateDebut, $dateFin);
 
-// Traiter les relevés récupérés
-foreach ($releves as $releve) {
-    $date = $releve['Date'];
-    $temperature = $releve['Temperature'];
-    $humidite = $releve['Humidite'];
+// // Traiter les relevés récupérés
+// foreach ($releves as $releve) {
+//     $date = $releve['Date'];
+//     $temperature = $releve['Temperature'];
+//     $humidite = $releve['Humidite'];
 
-    echo "Date: $date, Température: $temperature, Humidité: $humidite<br>";
-}
+//     echo "Date: $date, Température: $temperature, Humidité: $humidite<br>";
+// }
 
 // $releves = getSelectReleves(1);
 // print_r($releves);

@@ -2,6 +2,7 @@
 
 include_once '../BDD/SondeDAO.php';
 include_once '../BDD/RelevesDAO.php';
+include_once '../scrypt/scrypt.php';
 
 
 // $jsonData = generateRaspberryData();
@@ -40,142 +41,21 @@ include_once '../BDD/RelevesDAO.php';
 // }
 
 
-// Traiter les relevés récupérés
-foreach ($releves as $releve) {
-    $date = $releve['Date'];
-    $temperature = $releve['Temperature'];
-    $humidite = $releve['Humidite'];
-
-    echo "Date: $date, Temperature: $temperature, Humidite: $humidite<br>";
-}
-
-insertSonde("Sonde 1");
-
 //Boucle permettant de créer/insérer un jeu de données sur les 5 derniers jours
+function feedRelevesDb(){
+    $jsonData = generateDataForFiveDays();
 
-for($i=1;$i<=30;$i++){
-    $jsonData = generateRaspberryData();
-    if ($jsonData !== null) {
-        $data = json_decode($jsonData, true);
+$dataList = json_decode($jsonData, true);
 
-        if ($data !== null) {
-            $deviceId = $data['id'];
-            $deviceName = $data['deviceName'];
-            $temperature = $data['temperature'];
-            $dateRelevee = $data['date'];
-            $humidite = $data['humidity'];
-        } else {
-            echo "Erreur lors du décodage des données JSON.";
-        }
-    } else {
-        echo "Erreur provenant du scrypt Raspberry";
+if ($dataList !== null) {
+    foreach ($dataList as $data) {
+        $temperature = $data['temperature'];
+        $date = $data['date'];
+        $humidite = $data['humidite'];
+        insertReleves($date, $temperature, $humidite, 1);
     }
-    insertReleves($dateRelevee, $temperature, $humidite, 1);
-
-    //-------------------------------------------------------------------//
-    $jsonData = generateRaspberryData1();
-    if ($jsonData !== null) {
-        $data = json_decode($jsonData, true);
-
-        if ($data !== null) {
-            $deviceId = $data['id'];
-            $deviceName = $data['deviceName'];
-            $temperature = $data['temperature'];
-            $dateRelevee = $data['date'];
-            $humidite = $data['humidity'];
-        } else {
-            echo "Erreur lors du décodage des données JSON.";
-        }
-    } else {
-        echo "Erreur provenant du scrypt Raspberry";
-    }
-    insertReleves($dateRelevee, $temperature, $humidite, 1);
-    
-
-    //-------------------------------------------------------------------//
-    $jsonData = generateRaspberryData2();
-    if ($jsonData !== null) {
-        $data = json_decode($jsonData, true);
-
-        if ($data !== null) {
-            $deviceId = $data['id'];
-            $deviceName = $data['deviceName'];
-            $temperature = $data['temperature'];
-            $dateRelevee = $data['date'];
-            $humidite = $data['humidity'];
-        } else {
-            echo "Erreur lors du décodage des données JSON.";
-        }
-    } else {
-        echo "Erreur provenant du scrypt Raspberry";
-    }
-    insertReleves($dateRelevee, $temperature, $humidite, 1);
-
-    //-------------------------------------------------------------------//
-    $jsonData = generateRaspberryData3();
-    if ($jsonData !== null) {
-        $data = json_decode($jsonData, true);
-
-        if ($data !== null) {
-            $deviceId = $data['id'];
-            $deviceName = $data['deviceName'];
-            $temperature = $data['temperature'];
-            $dateRelevee = $data['date'];
-            $humidite = $data['humidity'];
-        } else {
-            echo "Erreur lors du décodage des données JSON.";
-        }
-    } else {
-        echo "Erreur provenant du scrypt Raspberry";
-    }
-    insertReleves($dateRelevee, $temperature, $humidite, 1);
-    
-    //-------------------------------------------------------------------//
-    $jsonData = generateRaspberryData4();
-    if ($jsonData !== null) {
-        $data = json_decode($jsonData, true);
-
-        if ($data !== null) {
-            $deviceId = $data['id'];
-            $deviceName = $data['deviceName'];
-            $temperature = $data['temperature'];
-            $dateRelevee = $data['date'];
-            $humidite = $data['humidity'];
-        } else {
-            echo "Erreur lors du décodage des données JSON.";
-        }
-    } else {
-        echo "Erreur provenant du scrypt Raspberry";
-    }
-    insertReleves($dateRelevee, $temperature, $humidite, 1);
-    
+}
 }
 
-// Exemple d'utilisation
-$idSonde = 1; // ID de la sonde
-$dateDebut = '2023-12-16 00:00:00'; // Date de début
-$dateFin = '2023-12-20 23:59:59'; // Date de fin
 
-$releves = getRelevesBetweenDates($idSonde, $dateDebut, $dateFin);
-
-// for($i=1;$i<=30;$i++){
-//     $jsonData = generateRaspberryData();
-//     if ($jsonData !== null) {
-//         $data = json_decode($jsonData, true);
-
-//         if ($data !== null) {
-//             $deviceId = $data['id'];
-//             $deviceName = $data['deviceName'];
-//             $temperature = $data['temperature'];
-//             $dateRelevee = $data['date'];
-//             $humidite = $data['humidity'];
-//         } else {
-//             echo "Erreur lors du décodage des données JSON.";
-//         }
-//     } else {
-//         echo "Erreur provenant du scrypt Raspberry";
-//     }
-//     insertReleves($dateRelevee, $temperature, $humidite, 1);
-// }
-
-?>
+feedRelevesDb();
