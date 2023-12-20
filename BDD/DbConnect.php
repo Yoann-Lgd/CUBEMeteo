@@ -1,7 +1,7 @@
 <?php
 
 try {
-    $db = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', 'root');
+    $db = new PDO('mysql:host=localhost:52000;dbname=cube_meteo', 'root', 'root');
 
 
 } catch (PDOException $erreur) {

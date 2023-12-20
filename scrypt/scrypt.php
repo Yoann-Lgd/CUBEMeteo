@@ -2,7 +2,7 @@
 
 function generateRaspberryData() {
     $temperature = rand(0, 40) + (rand(0, 90) / 100); // Simule une température entre 0 et 50
-    $humidity = rand(0, 100); // Simule une humidité entre 0 et 100`
+    $humidite = rand(0, 100); // Simule une humidité entre 0 et 100`
     $h = date("h")+1;
     $date = date("Y-m-d ".$h.":i:s");
 
@@ -11,84 +11,45 @@ function generateRaspberryData() {
         'deviceName' => 'Sonde',
         'temperature' => $temperature,
         'date'=> $date,
-        'humidity' => $humidity
+        'humidite' => $humidite
     ];
     return json_encode($data);
 }
 
-function generateRaspberryData1() {
-    $temperature = rand(0, 40) + (rand(0, 90) / 100); // Simule une température entre 0 et 50
-    $humidity = rand(0, 100); // Simule une humidité entre 0 et 100`
-    $d = date('d')-1;
-    $h = date("h")+1;
-    $date = date("Y-m-".$d." ".$h.":i:s");
+function generateDataForFiveDays() {
+    $dateDeDepart = strtotime('actuellement');
+    $endDate = strtotime('-5 jours');
 
-    $data = [
-        'id' => 1,
-        'deviceName' => 'Sonde',
-        'temperature' => $temperature,
-        'date'=> $date,
-        'humidity' => $humidity
-    ];
-    return json_encode($data);
+    $dataList = [];
+
+    while ($dateDeDepart <= $endDate) {
+        $temperature = rand(0, 40) + (rand(0, 90) / 100);
+        $humidite = rand(0, 100);
+        $date = date('Y-m-d H:i:s', $dateDeDepart);
+
+        $data = [
+            'id' => 1,
+            'deviceName' => 'Sonde',
+            'temperature' => $temperature,
+            'date' => $date,
+            'humidite' => $humidite
+        ];
+
+        $dataList[] = $data;
+
+        $dateDeDepart = strtotime('+30 minutes', $dateDeDepart);
+    }
+
+    return json_encode($dataList);
 }
 
-function generateRaspberryData2() {
-    $temperature = rand(0, 40) + (rand(0, 90) / 100); // Simule une température entre 0 et 50
-    $humidity = rand(0, 100); // Simule une humidité entre 0 et 100`
-    $d = date('d')-2;
-    $h = date("h")+1;
-    $date = date("Y-m-".$d." ".$h.":i:s");
 
-    $data = [
-        'id' => 1,
-        'deviceName' => 'Sonde',
-        'temperature' => $temperature,
-        'date'=> $date,
-        'humidity' => $humidity
-    ];
-    return json_encode($data);
-}
-
-function generateRaspberryData3() {
-    $temperature = rand(0, 40) + (rand(0, 90) / 100); // Simule une température entre 0 et 50
-    $humidity = rand(0, 100); // Simule une humidité entre 0 et 100`
-    $d = date('d')-3;
-    $h = date("h")+1;
-    $date = date("Y-m-".$d." ".$h.":i:s");
-
-    $data = [
-        'id' => 1,
-        'deviceName' => 'Sonde',
-        'temperature' => $temperature,
-        'date'=> $date,
-        'humidity' => $humidity
-    ];
-    return json_encode($data);
-}
-
-function generateRaspberryData4() {
-    $temperature = rand(0, 40) + (rand(0, 90) / 100); // Simule une température entre 0 et 50
-    $humidity = rand(0, 100); // Simule une humidité entre 0 et 100`
-    $d = date('d')-4;
-    $h = date("h")+1;
-    $date = date("Y-m-".$d." ".$h.":i:s");
-
-    $data = [
-        'id' => 1,
-        'deviceName' => 'Sonde',
-        'temperature' => $temperature,
-        'date'=> $date,
-        'humidity' => $humidity
-    ];
-    return json_encode($data);
-}
 // function raspberryPeriodically() {
 //     echo generateRaspberryData() . PHP_EOL;
 
 //     // Exécute la génération de données toutes les 5 minutes
 //     while (true) {
-//         sleep(5 * 60);
+//         sleep(4 * 60 * 60);
 //         $randomData = generateRaspberryData();
 //         echo $randomData . PHP_EOL;
 //     }
