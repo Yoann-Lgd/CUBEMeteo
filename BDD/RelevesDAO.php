@@ -35,7 +35,7 @@ function getSelectReleves($idReleves) {
 }
 
 // Fonction pour récupérer les relevés entre une date de début et une date de fin pour une sonde spécifique
-function getRelevesBetweenDates($idSonde, $dateDebut, $dateFin) {
+function getRelevesPeriode($idSonde, $dateDebut, $dateFin) {
     global $db;
 
     $query = "SELECT * FROM Releves WHERE ID_Sonde = :idSonde AND Date BETWEEN :dateDebut AND :dateFin";
@@ -52,10 +52,10 @@ function getRelevesBetweenDates($idSonde, $dateDebut, $dateFin) {
 
 // Exemple d'utilisation
 $idSonde = 1; // ID de la sonde
-$dateDebut = '2023-12-17 00:00:00'; // Date de début
+$dateDebut = '2023-12-16 00:00:00'; // Date de début
 $dateFin = '2023-12-20 23:59:59'; // Date de fin
 
-$releves = getRelevesBetweenDates($idSonde, $dateDebut, $dateFin);
+$releves = getRelevesPeriode($idSonde, $dateDebut, $dateFin);
 
 // Traiter les relevés récupérés
 foreach ($releves as $releve) {
