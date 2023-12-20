@@ -3,6 +3,7 @@
 include_once '../BDD/SondeDAO.php';
 include_once '../BDD/RelevesDAO.php';
 
+
 // $jsonData = generateRaspberryData();
 
 // if ($jsonData !== null) {
@@ -22,23 +23,21 @@ include_once '../BDD/RelevesDAO.php';
 // }
 
 
-// // Endpoint pour créer une sonde
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
-//     $nom = $_POST['nom'];
+// Endpoint pour créer une sonde
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
+    $nom = $_POST['nom'];
 
-//     // Utiliser la fonction insertSonde de la classe SondeDAO
-//     $result = insertSonde($nom);
+    $result = insertSonde($nom);
 
-//     // Répondre en fonction du résultat
-//     if ($result) {
-//         echo 'Sonde créée avec succès.';
-//     } else {
-//         echo 'Erreur lors de la création de la sonde.';
-//     }
-// } else {
-//     http_response_code(400);
-//     echo 'Requête invalide.';
-// }
+    if ($result) {
+        echo 'Sonde créée avec succès.';
+    } else {
+        echo 'Erreur lors de la création de la sonde.';
+    }
+} else {
+    http_response_code(400);
+    echo 'Requête invalide.';
+}
 
 
 // for($i=1;$i<=30;$i++){

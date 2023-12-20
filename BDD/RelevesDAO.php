@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . '/DbConnect.php';
+include_once 'DbConnect.php';
 
 function insertReleves($date, $temperature, $humidite, $idSonde) {
     global $db;
