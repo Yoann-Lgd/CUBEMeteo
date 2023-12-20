@@ -3,6 +3,7 @@
 require('DbConnect.php');
 
 
+
 function insertReleves($date, $temperature, $humidite, $idSonde) {
     global $db;
 
@@ -23,7 +24,7 @@ function insertReleves($date, $temperature, $humidite, $idSonde) {
 
 }
 
-function getSelectReleves($idReleves) {
+function getRelevesByID($idReleves) {
     global $db;
 
     
@@ -33,6 +34,18 @@ function getSelectReleves($idReleves) {
     $stmtReleves->execute();
 
     return $stmtReleves->fetch(PDO::FETCH_ASSOC);
+}
+
+function getRelevesBySonde($idSonde) {
+    global $db;
+
+    
+    $queryReleves = "SELECT * FROM Releves WHERE ID_Sonde = :idSonde";
+    $stmtReleves = $db->prepare($queryReleves);
+    $stmtReleves->bindParam(':idSonde', $idSonde);
+    $stmtReleves->execute();
+
+    return $stmtReleves->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Fonction pour récupérer les relevés entre une date de début et une date de fin pour une sonde spécifique
