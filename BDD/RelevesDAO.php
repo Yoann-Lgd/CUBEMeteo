@@ -63,7 +63,7 @@ foreach ($releves as $releve) {
     $temperature = $releve['Temperature'];
     $humidite = $releve['Humidite'];
 
-    echo "Date: $date, Température: $temperature, Humidité: $humidite<br>";
+    echo "Date: $date, Temperature: $temperature, Humidite: $humidite<br>";
 }
 
 
