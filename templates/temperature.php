@@ -10,8 +10,7 @@ require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 $BDD = connect_to('cube_meteo');
 
 
-
-
+//----------------------------------------------------------------------------------------//
 
 $fiveDays = fiveDayBefore(); //on récupère les dates des 5 derniers jours
 
@@ -71,7 +70,7 @@ $lastDaysAvTemp = averageFromArray($graphArray) //température moyenne sur les 5
             <br />
             <div id="temperature"><b>La température sera affichée ici.</b></div>
             <h1>Quelle température:</h1>
-            <p>Jettez un oeil à la température sur les dernières heures.</p>
+            <p>Jettez un oeil à la température sur les derniers jours.</p>
 
             <table class="charts-css bar data-spacing-5 show-labels show-data-on-hover">
                 <caption>
