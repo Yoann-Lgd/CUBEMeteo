@@ -46,23 +46,6 @@ if (isset($_GET['combo'])) {              //test si l'entrée est faite par l'ut
     <link rel="stylesheet" href="../CSS/styles.css" />
     <link rel="stylesheet" href="../CSS/charts.min.css" />
     <title>Température</title>
-    <script>			function afficherTemperature(str) {
-            if (str == "") {
-                document.getElementById("temperature").innerHTML = "";
-                return;
-            } else {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("temperature").innerHTML =
-                            this.responseText;
-                    }
-                };
-                xmlhttp.open("GET", "get_temperature.php?q=" + str, true);
-                xmlhttp.send();
-            }
-        }
-    </script>
 </head>
 
 <body>

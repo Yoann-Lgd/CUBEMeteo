@@ -1,8 +1,8 @@
 <?php
 
-//*******************************************************************************************//
-// Module contenant les fonctions suivantes : averageFromArray / fiveDayBefore / averageTemp //
-//*******************************************************************************************//
+//******************************************************************************************************************************************//
+// Module contenant les fonctions suivantes : averageFromArray / fiveDayBefore / averageTemp / averageHumidity / dateUnique / searchHumTemp //
+//******************************************************************************************************************************************//
 
 function averageFromArray($Array)
 {
@@ -56,7 +56,6 @@ function fiveDayBefore()
 
 function averageTemp($BDD, $Table,$day)
 {
-    $fiveDay = fiveDayBefore();
 
     $cursor = $BDD->query("SELECT Temperature FROM ".$Table." WHERE Date LIKE '%" . $day . "%'");
     $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
@@ -77,7 +76,6 @@ function averageTemp($BDD, $Table,$day)
 //----------------------------------------------------------------------------------------------------------------------------------------//
 
 function averageHumidity($BDD, $Table, $day){
-    $fiveDay = fiveDayBefore();
 
     $cursor = $BDD->query("SELECT Humidite FROM ".$Table." WHERE Date LIKE '%" . $day . "%'");
     $data = $cursor->fetchAll(PDO::FETCH_DEFAULT);
@@ -94,8 +92,34 @@ function averageHumidity($BDD, $Table, $day){
     return (float)$dataToReturn;
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------//
 
+function dateUnique($BDD,$Table){
+    //retourne la liste des dates uniques d'une table dans l'ordre décroissant
+    $date_array = [];
+    $cursor = $BDD->query("SELECT DISTINCT LEFT($Table,10) FROM releves ORDER BY $Table DESC");
+    $data_extract = $cursor->fetchAll(PDO::FETCH_ASSOC);
+    for($i = 0;$i < count($data_extract);$i++){
+        $date_array[] = $data_extract[$i]["LEFT(Date,10)"];
+    }
+    return $date_array;
+}
 
+//----------------------------------------------------------------------------------------------------------------------------------------//
+
+function searchTemp($BDD,$date,$Table){
+    $resTemp = averageTemp($BDD,'releves',$date);
+    $answer = "Température moyenne du ".$date." : ".$resTemp."°C";
+    return $answer;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------//
+
+function searchHum($BDD,$date,$Table){
+    $resHum = averageHumidity($BDD,'releves',$date);
+    $answer = "Humidité moyenne du ".$date." : ".$resHum."%";
+    return $answer;
+}
 
 
 ?>

@@ -39,22 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     echo 'Requête invalide.';
 }
 
-// Exemple d'utilisation
-$idSonde = 1; // ID de la sonde
-$dateDebut = '2023-12-16 00:00:00'; // Date de début
-$dateFin = '2023-12-20 23:59:59'; // Date de fin
-
-$releves = getRelevesPeriode($idSonde, $dateDebut, $dateFin);
-
-// Traiter les relevés récupérés
-foreach ($releves as $releve) {
-    $date = $releve['Date'];
-    $temperature = $releve['Temperature'];
-    $humidite = $releve['Humidite'];
-
-    echo "Date: $date, Temperature: $temperature, Humidite: $humidite<br>";
-}
-
 
 // for($i=1;$i<=30;$i++){
 //     $jsonData = generateRaspberryData();

@@ -86,12 +86,12 @@ function generateRaspberryData4() {
 // function raspberryPeriodically() {
 //     echo generateRaspberryData() . PHP_EOL;
 
-    //     // Exécute la génération de données toutes les 5 minutes
-    //     while (true) {
-        //         sleep(5 * 60);
-        //         $randomData = generateRaspberryData();
-        //         echo $randomData . PHP_EOL;
-    //     }
+//     // Exécute la génération de données toutes les 5 minutes
+//     while (true) {
+//         sleep(5 * 60);
+//         $randomData = generateRaspberryData();
+//         echo $randomData . PHP_EOL;
+//     }
 // }
 
 // // Appeler la fonction pour exécuter le script périodiquement
