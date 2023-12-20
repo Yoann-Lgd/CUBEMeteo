@@ -84,7 +84,7 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur les dernières heures.</p>
 
-            <table class="charts-css line show-primary-axis show-2-secondary-axes show-labels  show-heading">
+            <table class="charts-css line show-primary-axis show-2-secondary-axes show-data-axes show-labels  show-heading">
                 <caption>
                     Température
                 </caption>
@@ -93,9 +93,10 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                     <?php
                     $cpt = 0;
                     for($i = 0;$i<(count($data_temp)-1);$i++){
+                        //pour tout les points
                         $cpt++;
-                        if(count($data_hour)>10){
-                            if($cpt == 10){
+                        if(count($data_hour)>=15){//si il y a moins de 15pts à placer
+                            if($cpt == 2){//si 2 itérations ont été faites :
                                 $point_name = $data_temp[$i][0];
                                 $title_point ="";
                                 $cpt = 0;
@@ -104,7 +105,7 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                                 $point_name = "";
                             }
 
-                        }else{
+                        }elseif(count($data_hour)<=10){
                             
                             $title_point = substr($data_hour[$i][0],-8);
                             $point_name = $data_temp[$i][0];
