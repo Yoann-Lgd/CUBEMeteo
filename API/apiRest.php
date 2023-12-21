@@ -1,6 +1,13 @@
 <?php
 
 header("Content-Type: application/json");
+// Autoriser l'accès depuis n'importe quelle origine
+header("Access-Control-Allow-Origin: *");
+// Autoriser certaines méthodes HTTP
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+// Autoriser certains en-têtes dans la requête
+header("Access-Control-Allow-Headers: Content-Type");
+
 
 require('RelevesDAO.php');
 require('SondeDAO.php');
