@@ -15,7 +15,7 @@ require('DbConnect.php');
         return $result;
     }
 
-    // Fonction pour récupérer la sonde selon son id
+    // Fonction pour récupérer toutes les sondes
     function getAllSonde() {
         global $db;
 
@@ -23,9 +23,9 @@ require('DbConnect.php');
         $sondeStmt = $db->prepare($sondeQuery);
         $sondeStmt->execute();
 
-        return $sondeStmt->fetch(PDO::FETCH_ASSOC);
+        return $sondeStmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+        
     // Fonction pour récupérer la sonde selon son id
     function getSondeById($idSonde) {
         global $db;

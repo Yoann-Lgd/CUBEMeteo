@@ -120,7 +120,7 @@ function dateUniqueReverse($BDD,$Table){
 
 //----------------------------------------------------------------------------------------------------------------------------------------//
 
-function searchTemp($BDD,$date){
+function searchTemp($BDD,$date,$Table){
     $resTemp = averageTemp($BDD,'releves',$date);
     $answer = "Température moyenne du ".$date." : ".$resTemp."°C";
     return $answer;
@@ -136,13 +136,6 @@ function searchHum($BDD,$date,$Table){
 
 //----------------------------------------------------------------------------------------------------------------------------------------//
 
-
-
-
-
-
-//----------------------------------------------------------------------------------------------------------------------------------------//
-
 function picto($data){
     $heatWarning = '<img width="80" height="80" src="https://img.icons8.com/office/80/thermometer.png" alt="thermometer"/>';
     $coldWarning = '<img width="80" height="80" src="https://img.icons8.com/ultraviolet/80/thermometer.png" alt="thermometer"/>';
@@ -153,83 +146,5 @@ function picto($data){
         echo $coldWarning;
     }
 }
-/////////////////////////////
-/*CONNECTION AVEC LA BDD MYSQL*/
-// $db == database
-
-//Température
-
-if($_GET['combo1']!=""){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
-    if($_GET['combo2']!=""){ 
-        $date_debut = $_GET['combo1'];
-        $date_fin = $_GET['combo2'];
-        $array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
-    }
-}
-else{
-
-    $date_debut = date("Y-m-d");
-    $date_fin = date("Y-m-d");;
-    // $todayTemp = dayTemp($db,$yesterday);
-    $array_releves = [];
-    // for($i =0;$i<$todayTemp;$i++){
-    //     $array_releves[] = 
-    //         [
-    //         "Temperature" => $todayTemp[0][$i],
-    //         "Date" => date("Y-m-d"),
-    //         ];
-    // }
-
-
-}
-if($_GET['combo1']!="" And $_GET['combo2']==""){
-    $date_debut = date("Y-m-d");
-    $date_fin = date("Y-m-d");
-    $cursor  = $db->query("SELECT Temperature FROM releves WHERE Date ='".$date_debut."'");
-    $data = $cursor->fetchAll(PDO::FETCH_ASSOC);
-    
-    $array_releves = $data;
-    return $array_releves;
-}
-
-
-
-//Humidité
-
-    if($_GET['combo1']!=""){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
-    if($_GET['combo2']!=""){ 
-        $date_debut2 = $_GET['combo1'];
-        $date_fin2 = $_GET['combo2'];
-        $array_releves2 = getRelevesBetweenDates("1", $date_debut2, $date_fin2);
-    }
-}
-else{
-
-    $date_debut2 = date("Y-m-d");
-    $date_fin2 = date("Y-m-d");
-    // $todayTemp = dayTemp($db,$yesterday);
-    $array_releves2 = [];
-    // for($i =0;$i<$todayTemp;$i++){
-    //     $array_releves[] = 
-    //         [
-    //         "Temperature" => $todayTemp[0][$i],
-    //         "Date" => date("Y-m-d"),
-    //         ];
-    // }
-
-
-}
-if($_GET['combo1']!="" And $_GET['combo2']==""){
-    $date_debut2 = date("Y-m-d");
-    $date_fin2 = date("Y-m-d");
-    $cursor  = $db->query("SELECT Humidite FROM releves WHERE Date ='".$date_debut2."'");
-    $data = $cursor->fetchAll(PDO::FETCH_ASSOC);
-    
-    $array_releves2 = $data;
-}
-return $array_releves2;
-
-
-// feedRelevesDb();
 
 ?>
