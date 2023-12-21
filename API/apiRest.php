@@ -119,22 +119,5 @@ echo json_encode($result);
 // }
 // }
 
-// /*CONNECTION AVEC LA BDD MYSQL*/
-// // $db == database
-
-// $date_debut = date('Y-m-d');
-// $date_fin = date('Y-m-d');
-
-// if(isset($_GET['combo1'])){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
-//     $date_debut = $_GET['combo1'];
-//     if(isset($_GET['combo2'])){ 
-//         $date_fin = $_GET['combo2'];
-    
-//     }
-// }
-
-
-// $array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
-
 // feedRelevesDb();
 

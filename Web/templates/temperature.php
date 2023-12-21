@@ -2,8 +2,7 @@
 //Importation des modules
 
 
-require('../API/apiRest.php');
-
+require_once('../../API/apiRest.php');
 
 
 
@@ -12,13 +11,21 @@ require('../API/apiRest.php');
 
 $array_temp = [];
 $heure = [];
+
 foreach($array_releves as $releves){ //on récupère toutes les températures dans une array et toutes les heures dans une autre array
-    $temperature = $releves['Temperature'];
-    $array_temp[] = $temperature;
-    $h = $releves['Date'];
-    $heure[] = substr($h,-8);
+$temperature = $releves['Temperature'];
+$array_temp[] = $temperature;
+$h = $releves['Date'];
+$heure[] = substr($h,-8);
 }
-$answer = "Voici le graphique des températures relevés entre le ".$date_debut." et le ".$date_fin; //phrase de synthèse
+ 
+
+if($date_debut == date("Y-m-d") And $date_fin == $date_debut){
+    $answer = "Veuillez selectionner deux dates";
+}elseif($date_debut != ""){
+    $answer = "Voici le graphique des températures relevés entre le ".$date_debut." et le ".$date_fin; //phrase de synthèse
+}
+
 
 
 $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moyenne sur la période donnée
@@ -39,7 +46,7 @@ $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moye
 <body>
     <div class="mainTemperature">
         <div class="temperature">
-            <h2>Sélectionnez une heure :</h2>
+            <h2>Sélectionnez une date :</h2>
             <form method="get">
                 <select name="combo1" >
                     <option value="">Tout</option>
@@ -67,12 +74,9 @@ $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moye
             <br />
             <div id="temperature"><b><?php echo $answer;?></b></div>
             <h1>Quelle température:</h1>
-            <p>Jettez un oeil à la température sur les dernières heures.</p>
+            <p>Jettez un oeil à la température sur la période selectionnée.</p>
 
             <table class="charts-css line show-primary-axis show-10-secondary-axes  show-labels  show-heading">
-                <caption>
-                    Température
-                </caption>
 
                 <tbody>
                     <?php

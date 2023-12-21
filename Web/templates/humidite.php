@@ -1,7 +1,7 @@
 <?php
 //Importation des modules
 
-require('../API/apiRest.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
+require('../../API/apiRest.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
 
 
 
@@ -10,40 +10,28 @@ $BDD = $db;
 
 
 
-//--------------------------------------------------------------------------------------------------------------------------------------//
+$array_hum = [];
+$heure = [];
 
-$fiveDays = fiveDayBefore(); //on récupère les dates des 5 derniers jours
 
-$graphArray = []; //initialisation de l'array qui va recevoir les moyennes d'humidité par jours
-
-for($i = 0;$i < count($fiveDays);$i++){//On calcul l'humidité moyenne de chaques jour (itération de l'array des 5 dates)
-    $jour = $fiveDays[$i];
-    $averageCache = averageHumidity($BDD, 'releves',$jour);
-    $graphArray[] = $averageCache;
-}
-
-$lastDaysAvHum = averageFromArray($graphArray); //Humidité moyenne sur les 5 derniers jours
-if(isset($_GET['combo'])){              //test si l'entrée est faite par l'utilisateur
-    $date_input = $_GET['combo'];    
-    $answer = searchTemp($BDD,$date_input,'releves');
-    $cursor = $BDD->query("SELECT Humidite FROM releves WHERE Date LIKE '%" . $date_input . "%'");
-    $data_temp = $cursor->fetchAll(PDO::FETCH_DEFAULT);;
-
-    $cursor = $BDD->query("SELECT Date FROM releves WHERE Date LIKE '%" . $date_input . "%'");
-    $data_hour = $cursor->fetchAll(PDO::FETCH_DEFAULT);;
-
-    $title_point = " ";
-    // if(count($data_temp)<10){
-    //     $title_point = substr($data_hour[$i][0],-8);
-    // } 
+foreach($array_releves as $releves){ //on récupère toutes les températures dans une array et toutes les heures dans une autre array
+    $humidite = $releves['Humidite'];
+    $array_hum[] = $humidite;
+    $h = $releves['Date'];
+    $heure[] = substr($h,-8);
+    }
+     
+    
+    if($date_debut == date("Y-m-d") And $date_fin == $date_debut){
+        $answer = "Veuillez selectionner deux dates";
+    }elseif($date_debut != ""){
+        $answer = "Voici le graphique de l'humidite relevée entre le ".$date_debut." et le ".$date_fin; //phrase de synthèse
+    }
     
     
-} else {
-    $answer = "Choisissez une date";
-    $data_temp = [[0,0,0,0,0],[0,0,0,0,0]];
-    $date_input = "";
-    $data_hour = [[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0]];
-}
+    
+    $lastDaysAvHum = substr(averageFromArray($array_hum),0,4); //température moyenne sur la période donnée
+
 ?>
 
 
@@ -64,11 +52,21 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
         <div class="humidite">
         <h2>Sélectionnez une date :</h2>
         <form>
-                <select name="combo" >
+                <select name="combo1" >
                     <option value="">Tout</option>
                     <?php
-                    $date_array = dateUnique($BDD,'Date');
+                    $date_array = dateUniqueReverse($BDD,'Date');
                     for($i=0;$i <= count($date_array)+1;$i++){
+                    echo "<option>".$date_array[$i]."</option>";
+                    }
+                    ?>
+                    <!-- Ajoutez d'autres options selon vos besoins -->
+                </select>
+                <select name="combo2" >
+                    <option value="">Tout</option>
+                    <?php
+                    $date_array = dateUnique($db,'Date');
+                    for($i=0;$i < count($date_array);$i++){
                     echo "<option>".$date_array[$i]."</option>";
                     }
                     ?>
@@ -78,21 +76,20 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
             </form>
             <br />
             <h1>Quelle humidité:</h1>
-            <p>Jettez un oeil à l’humidité sur les dernières heures.</p>
-            <table class="charts-css line show-primary-axis show-2-secondary-axes show-data-axes show-labels  show-heading">
-                <caption>
-                    Température
-                </caption>
+            <p>Jettez un oeil à l’humidité sur la période selectionnée.</p>
+            <table class="charts-css line show-primary-axis show-10-secondary-axes  show-labels  show-heading">
+
 
                 <tbody>
                     <?php
                     $cpt = 0;
-                    for($i = 0;$i<(count($data_temp)-1);$i++){
+                    for($i = 0;$i<(count($array_hum)-1);$i++){
                         //pour tout les points
                         $cpt++;
-                        if(count($data_hour)>=15){//si il y a moins de 15pts à placer
-                            if($cpt == 2){//si 2 itérations ont été faites :
-                                $point_name = $data_temp[$i][0];
+                        
+                        if(count($heure)>=30){//si il y a moins de 15pts à placer
+                            if($cpt == 7){//si 2 itérations ont été faites :
+                                $point_name = "";
                                 $title_point ="";
                                 $cpt = 0;
                             }else{
@@ -100,13 +97,18 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                                 $point_name = "";
                             }
 
-                        }elseif(count($data_hour)<=10){
+                        }elseif(count($heure)>=10){
                             
-                            $title_point = substr($data_hour[$i][0],-8);
-                            $point_name = $data_temp[$i][0];
+                            $title_point = "";
+                            $point_name = $array_hum[$i];
                         }
-                        $start = "0.". (int)$data_temp[$i][0];
-                        $end = "0.". (int)$data_temp[$i+1][0];
+                        elseif(count($heure)<=10){
+                            
+                            $title_point = $heure[$i];
+                            $point_name = $array_hum[$i];
+                        }
+                        $start = "0.". (int)$array_hum[$i];
+                        $end = "0.". (int)$array_hum[$i+1];
                         echo('
                         <tr>
                         <th scope = "row">'.$title_point.'</th>
@@ -120,8 +122,7 @@ if(isset($_GET['combo'])){              //test si l'entrée est faite par l'util
                     ?>
                 </tbody>
             </table>
-            <p>L’humidité moyenne sur les 5 derniers jours était de 
-            <p class="averageHumidity">&nbsp<?php echo $lastDaysAvHum."%"?></p>.</p>
+            <p><?php echo "Le taux moyen d'humidité entre ces dates est de ".$lastDaysAvHum."%"?></p>
             <img src="../images/rire.svg" />
 
         </div>
