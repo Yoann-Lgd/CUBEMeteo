@@ -67,6 +67,10 @@ div.indexMix div img {
 	width: 15%;
 }
 
+#myModal {
+	background-color: #265073;
+}
+
 div.indexIntro {
 	background-color: #ecf4d6;
 	flex-direction: column;
