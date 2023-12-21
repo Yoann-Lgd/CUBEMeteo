@@ -12,7 +12,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 require('RelevesDAO.php');
 require('SondeDAO.php');
 // require('../scrypt/scrypt.php');
-require('toolbox.php');
+// require('toolbox.php');
 
 
 // Récupérer la méthode HTTP
