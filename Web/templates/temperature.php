@@ -2,7 +2,7 @@
 //Importation des modules
 
 
-require_once('../../API/apiRest.php');
+// require_once('../../API/apiRest.php');
 
 
 
@@ -12,24 +12,45 @@ require_once('../../API/apiRest.php');
 $array_temp = [];
 $heure = [];
 
-foreach($array_releves as $releves){ //on récupère toutes les températures dans une array et toutes les heures dans une autre array
-$temperature = $releves['Temperature'];
-$array_temp[] = $temperature;
-$h = $releves['Date'];
-$heure[] = substr($h,-8);
-}
+// foreach($array_releves as $releves){ //on récupère toutes les températures dans une array et toutes les heures dans une autre array
+// $temperature = $releves['Temperature'];
+// $array_temp[] = $temperature;
+// $h = $releves['Date'];
+// $heure[] = substr($h,-8);
+// }
  
 
-if($date_debut == date("Y-m-d") And $date_fin == $date_debut){
-    $answer = "Veuillez selectionner deux dates";
-}elseif($date_debut != ""){
-    $answer = "Voici le graphique des températures relevés entre le ".$date_debut." et le ".$date_fin; //phrase de synthèse
-}
+// if($date_debut == date("Y-m-d") And $date_fin == $date_debut){
+//     $answer = "Veuillez selectionner deux dates";
+// }elseif($date_debut != ""){
+//     $answer = "Voici le graphique des températures relevés entre le ".$date_debut." et le ".$date_fin; //phrase de synthèse
+// }
 
 
 
-$lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moyenne sur la période donnée
+// $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moyenne sur la période donnée
 
+$data_sample1 = "2023-12-19";
+$data_sample2 = "2023-12-21";
+
+$data = array(
+    'date_debut'=>$data_sample1,
+    'date_fin'=>$data_sample2,
+);
+
+$options = array(
+    'http' => array(
+        'method'  => 'POST',
+        'header'  => "Content-Type: application/json",
+        'content' => json_encode($data),
+    ),
+);
+$context  = stream_context_create($options);
+
+file_get_contents('http://api.localhost:9530/apiRest.php?resource=releves_periode', false, $context);
+
+
+print_r($data);
 ?>
 
 <!DOCTYPE html>
@@ -47,9 +68,26 @@ $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moye
     <div class="mainTemperature">
         <div class="temperature">
             <h2>Sélectionnez une date :</h2>
+
             <form method="get">
+            <select name="combo" >
+                    <option value="">Tout</option>
+                    <option value=""><?php echo "2023-12-19";  ?></option>
+            </select>
+            <select name="combo2" >
+                    <option value="">Tout</option>
+                    <option value=""><?php echo "2023-12-21";  ?></option>
+            </select>
+            <input type='submit' value='Afficher'>
+            </form>
+
+
+
+            <form method="get">
+            
                 <select name="combo1" >
                     <option value="">Tout</option>
+                    <option value="">2023-12-21</option>
                     <?php
                     $date_array = dateUniqueReverse($db,'Date');
                     for($i=0;$i < count($date_array);$i++){
@@ -67,8 +105,8 @@ $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moye
                     }
                     ?>
                     <!-- Ajoutez d'autres options selon vos besoins -->
+                    
                 </select>
-
                 <input type='submit' value='Afficher'>
             </form>
             <br />
