@@ -1,7 +1,7 @@
 <?php
 //Importation des modules
 
-require('connect.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
+require('../API/apiRest.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
 require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 
 
