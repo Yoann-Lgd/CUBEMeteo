@@ -48,12 +48,16 @@
 			<!-- La modal -->
 			<div id="myModal" class="modal">
 				<div class="modal-content">
-					<span class="close" onclick="closeModal()">&times;</span>
 					<h2>Nouvelle sonde.</h2>
 					<p>Voici les données de votre nouvelle sonde !</p>
 					<!-- Formulaire pour afficher l'humidité -->
 					<form action="../templates/humidite.php" method="post">
-						<button type="submit" name="humidite">Afficher l’humidité</button>
+						<label for="fname">Nom de la nouvelle sonde:</label><br />
+						<input type="text" id="fname" name="fname" /><br />
+						<div class="valideAnnul">
+							<button type="submit" name="Valide">Créer</button>
+							<span class="close" onclick="closeModal()">Annuler</span>
+						</div>
 					</form>
 				</div>
 			</div>
