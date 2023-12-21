@@ -120,7 +120,7 @@ function dateUniqueReverse($BDD,$Table){
 
 //----------------------------------------------------------------------------------------------------------------------------------------//
 
-function searchTemp($BDD,$date,$Table){
+function searchTemp($BDD,$date){
     $resTemp = averageTemp($BDD,'releves',$date);
     $answer = "Température moyenne du ".$date." : ".$resTemp."°C";
     return $answer;
@@ -133,6 +133,13 @@ function searchHum($BDD,$date,$Table){
     $answer = "Humidité moyenne du ".$date." : ".$resHum."%";
     return $answer;
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------------//
+
+
+
+
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------//
 

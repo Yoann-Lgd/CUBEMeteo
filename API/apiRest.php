@@ -2,9 +2,9 @@
 
 // header("Content-Type: application/json");
 
-require('../BDD/RelevesDAO.php');
-require('../BDD/SondeDAO.php');
-require('../scrypt/scrypt.php');
+require('RelevesDAO.php');
+require('SondeDAO.php');
+// require('../Sonde/script.php');
 require('toolbox.php');
 
 
@@ -121,19 +121,78 @@ if ($dataList !== null) {
 /*CONNECTION AVEC LA BDD MYSQL*/
 // $db == database
 
-$date_debut = date('Y-m-d');
-$date_fin = date('Y-m-d');
+//Température
 
-if(isset($_GET['combo1'])){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
-    $date_debut = $_GET['combo1'];
-    if(isset($_GET['combo2'])){ 
+    if($_GET['combo1']!=""){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
+    if($_GET['combo2']!=""){ 
+        $date_debut = $_GET['combo1'];
         $date_fin = $_GET['combo2'];
-    
+        $array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
     }
+}
+else{
+
+    $date_debut = date("Y-m-d");
+    $date_fin = date("Y-m-d");;
+    // $todayTemp = dayTemp($db,$yesterday);
+    $array_releves = [];
+    // for($i =0;$i<$todayTemp;$i++){
+    //     $array_releves[] = 
+    //         [
+    //         "Temperature" => $todayTemp[0][$i],
+    //         "Date" => date("Y-m-d"),
+    //         ];
+    // }
+
+
+}
+if($_GET['combo1']!="" And $_GET['combo2']==""){
+    $date_debut = date("Y-m-d");
+    $date_fin = date("Y-m-d");
+    $cursor  = $db->query("SELECT Temperature FROM releves WHERE Date ='".$date_debut."'");
+    $data = $cursor->fetchAll(PDO::FETCH_ASSOC);
+    
+    $array_releves = $data;
+    return $array_releves;
 }
 
 
-$array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
+
+//Humidité
+
+    if($_GET['combo1']!=""){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
+    if($_GET['combo2']!=""){ 
+        $date_debut2 = $_GET['combo1'];
+        $date_fin2 = $_GET['combo2'];
+        $array_releves2 = getRelevesBetweenDates("1", $date_debut2, $date_fin2);
+    }
+}
+else{
+
+    $date_debut2 = date("Y-m-d");
+    $date_fin2 = date("Y-m-d");
+    // $todayTemp = dayTemp($db,$yesterday);
+    $array_releves2 = [];
+    // for($i =0;$i<$todayTemp;$i++){
+    //     $array_releves[] = 
+    //         [
+    //         "Temperature" => $todayTemp[0][$i],
+    //         "Date" => date("Y-m-d"),
+    //         ];
+    // }
+
+
+}
+if($_GET['combo1']!="" And $_GET['combo2']==""){
+    $date_debut2 = date("Y-m-d");
+    $date_fin2 = date("Y-m-d");
+    $cursor  = $db->query("SELECT Humidite FROM releves WHERE Date ='".$date_debut2."'");
+    $data = $cursor->fetchAll(PDO::FETCH_ASSOC);
+    
+    $array_releves2 = $data;
+}
+return $array_releves2;
+
 
 // feedRelevesDb();
 
