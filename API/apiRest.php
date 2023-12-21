@@ -1,10 +1,10 @@
 <?php
 
-// header("Content-Type: application/json");
+header("Content-Type: application/json");
 
-require('../BDD/RelevesDAO.php');
-require('../BDD/SondeDAO.php');
-require('../scrypt/scrypt.php');
+require('RelevesDAO.php');
+require('SondeDAO.php');
+// require('../scrypt/scrypt.php');
 require('toolbox.php');
 
 
@@ -29,41 +29,42 @@ switch ($method) {
                     break;
             }
         } else {
-            $result = ['message' => 'Ressource non spécifiée'];
+            $result = ['message' => 'Ressource non spécifiée Get'];
             http_response_code(400);
         }
         break;
 
-        // case 'POST':
-        //     $data = json_decode(file_get_contents("php://input"), true);
-        //     if (isset($data['resource'])) {
-        //         $resource = $data['resource'];
-        //         switch ($resource) {
-        //             case 'sondes':
-        //                 $result = $sondeDAO->createSonde($data['nom']);
-        //                 break;
-        //             case 'releves':
-        //                 $result = $relevesDAO->createReleves($data['date'], $data['temperature'], $data['humidite'], $data['idSonde']);
-        //                 break;
-        //             default:
-        //                 $result = ['message' => 'Ressource non trouvée'];
-        //                 http_response_code(404);
-        //                 break;
-        //         }
-        //     } else {
-        //         $result = ['message' => 'Ressource non spécifiée'];
-        //         http_response_code(400);
-        //     }
-        //     break;
+        case 'POST':
+            $data = json_decode(file_get_contents("php://input"), true);
+            if (isset($data['resource'])) {
+                $resource = $data['resource'];
+                switch ($resource) {
+                    case 'sonde':
+                        $result = insertSonde($data['nom']);
+                        var_dump($data['nom']);
+                        break;
+                    case 'releves':
+                        $result = insertReleves($data['date'], $data['temperature'], $data['humidite'], $data['idSonde']);
+                        break;
+                    default:
+                        $result = ['message' => 'Ressource non trouvée'];
+                        http_response_code(404);
+                        break;
+                }
+            } else {
+                $result = ['message' => 'Ressource non spécifiée dans post'];
+                http_response_code(400);
+            }
+            break;
 
-        // default:
-        //     $result = ['message' => 'Méthode non autorisée'];
-        //     http_response_code(405);
-        //     break;
+        default:
+            $result = ['message' => 'Méthode non autorisée'];
+            http_response_code(405);
+            break;
 }
 
 
-// echo json_encode($result);
+echo json_encode($result);
 
 
 // $jsonData = generateRaspberryData();
@@ -102,38 +103,38 @@ switch ($method) {
 // }
 
 
-//Boucle permettant de créer/insérer un jeu de données sur les 5 derniers jours
-function feedRelevesDb(){
-    $jsonData = generateDataForFiveDays();
+// //Boucle permettant de créer/insérer un jeu de données sur les 5 derniers jours
+// function feedRelevesDb(){
+//     $jsonData = generateDataForFiveDays();
 
-$dataList = json_decode($jsonData, true);
+// $dataList = json_decode($jsonData, true);
 
-if ($dataList !== null) {
-    foreach ($dataList as $data) {
-        $temperature = $data['temperature'];
-        $date = $data['date'];
-        $humidite = $data['humidite'];
-        insertReleves($date, $temperature, $humidite, 1);
-    }
-}
-}
+// if ($dataList !== null) {
+//     foreach ($dataList as $data) {
+//         $temperature = $data['temperature'];
+//         $date = $data['date'];
+//         $humidite = $data['humidite'];
+//         insertReleves($date, $temperature, $humidite, 1);
+//     }
+// }
+// }
 
-/*CONNECTION AVEC LA BDD MYSQL*/
-// $db == database
+// /*CONNECTION AVEC LA BDD MYSQL*/
+// // $db == database
 
-$date_debut = date('Y-m-d');
-$date_fin = date('Y-m-d');
+// $date_debut = date('Y-m-d');
+// $date_fin = date('Y-m-d');
 
-if(isset($_GET['combo1'])){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
-    $date_debut = $_GET['combo1'];
-    if(isset($_GET['combo2'])){ 
-        $date_fin = $_GET['combo2'];
+// if(isset($_GET['combo1'])){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
+//     $date_debut = $_GET['combo1'];
+//     if(isset($_GET['combo2'])){ 
+//         $date_fin = $_GET['combo2'];
     
-    }
-}
+//     }
+// }
 
 
-$array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
+// $array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
 
 // feedRelevesDb();
 
