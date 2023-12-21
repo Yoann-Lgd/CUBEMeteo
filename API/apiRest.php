@@ -30,6 +30,9 @@ switch ($method) {
                 case 'releves':
                     $result = getRelevesBySonde(1);
                     break;
+                case 'releves_periodes':
+                    $result = getRelevesBetweenDates($idSonde['idSonde'], $dateDebut['date_debut'], $dateFin['date_fin']);
+                    break;
                 default:
                     $result = ['message' => 'Ressource non trouvée'];
                     http_response_code(404);
