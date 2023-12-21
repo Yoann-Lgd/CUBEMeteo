@@ -2,12 +2,11 @@
 //Importation des modules
 
 require('../API/apiRest.php'); //Fichier contenant la fonction connect_to() qui permet de faire la connection avec la BDD
-require('toolbox.php'); // Module toolbox qui contient les fonctions du script
 
 
 
 /*CONNECTION AVEC LA BDD MYSQL*/
-$BDD = connect_to('cube_meteo');
+$BDD = $db;
 
 
 
