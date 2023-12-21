@@ -1,10 +1,11 @@
 <?php
 
-header("Content-Type: application/json");
+// header("Content-Type: application/json");
 
 require('../BDD/RelevesDAO.php');
 require('../BDD/SondeDAO.php');
 require('../scrypt/scrypt.php');
+require('toolbox.php');
 
 
 // Récupérer la méthode HTTP
@@ -60,7 +61,9 @@ switch ($method) {
         //     http_response_code(405);
         //     break;
 }
-echo json_encode($result);
+
+
+// echo json_encode($result);
 
 
 // $jsonData = generateRaspberryData();
@@ -115,5 +118,22 @@ if ($dataList !== null) {
 }
 }
 
+/*CONNECTION AVEC LA BDD MYSQL*/
+// $db == database
+
+$date_debut = date('Y-m-d');
+$date_fin = date('Y-m-d');
+
+if(isset($_GET['combo1'])){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
+    $date_debut = $_GET['combo1'];
+    if(isset($_GET['combo2'])){ 
+        $date_fin = $_GET['combo2'];
+    
+    }
+}
+
+
+$array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
 
 // feedRelevesDb();
+

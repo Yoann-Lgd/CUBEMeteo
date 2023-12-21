@@ -2,26 +2,14 @@
 //Importation des modules
 
 
-require('toolbox.php'); // Module toolbox qui contient les fonctions du script
-require('C:\wamp64\www\cubemeteo\BDD\RelevesDAO.php');// Module de traitement de données
+require('../API/apiRest.php');
 
 
-/*CONNECTION AVEC LA BDD MYSQL*/
-$BDD = connect_to('cube_meteo');
-
-$date_debut = date('Y-m-d');
-$date_fin = date('Y-m-d');
-
-if(isset($_GET['combo1'])){ //on change les valeur de debut et fin si l'utilisateur les a sélectionnées
-    $date_debut = $_GET['combo1'];
-    if(isset($_GET['combo2'])){ 
-        $date_fin = $_GET['combo2'];
-    
-    }
-}
 
 
-$array_releves = getRelevesBetweenDates("1", $date_debut, $date_fin);
+
+
+
 $array_temp = [];
 $heure = [];
 foreach($array_releves as $releves){ //on récupère toutes les températures dans une array et toutes les heures dans une autre array
@@ -52,12 +40,12 @@ $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moye
     <div class="mainTemperature">
         <div class="temperature">
             <h2>Sélectionnez une heure :</h2>
-            <form>
+            <form method="get">
                 <select name="combo1" >
                     <option value="">Tout</option>
                     <?php
-                    $date_array = dateUniqueReverse($BDD,'Date');
-                    for($i=0;$i <= count($date_array)+1;$i++){
+                    $date_array = dateUniqueReverse($db,'Date');
+                    for($i=0;$i < count($date_array);$i++){
                     echo "<option>".$date_array[$i]."</option>";
                     }
                     ?>
@@ -66,8 +54,8 @@ $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moye
                 <select name="combo2" >
                     <option value="">Tout</option>
                     <?php
-                    $date_array = dateUnique($BDD,'Date');
-                    for($i=0;$i <= count($date_array)+1;$i++){
+                    $date_array = dateUnique($db,'Date');
+                    for($i=0;$i < count($date_array);$i++){
                     echo "<option>".$date_array[$i]."</option>";
                     }
                     ?>
