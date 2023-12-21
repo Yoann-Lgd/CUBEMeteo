@@ -51,7 +51,6 @@ function getRelevesBySonde($idSonde) {
 // Fonction pour récupérer les relevés entre une date de début et une date de fin pour une sonde spécifique
 function getRelevesBetweenDates($idSonde, $dateDebut, $dateFin) {
     global $db;
-
     $query = "SELECT * FROM Releves WHERE ID_Sonde = :idSonde AND Date BETWEEN :dateDebut AND :dateFin";
 
     $stmt = $db->prepare($query);

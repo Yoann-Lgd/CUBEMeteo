@@ -1,56 +1,34 @@
 <?php
-//Importation des modules
+include_once('toolbox.php');
 
 
-// require_once('../../API/apiRest.php');
+$date_debut = $_GET['combo1'];
+$date_fin = $_GET['combo2'];
+
+$post_data = json_encode($data = [
+    'date_debut'=>$date_debut,
+    'date_fin'=>$date_fin]);
+$ch = curl_init();
+
+$options = [
+    CURLOPT_URL=>'http://apimeteo/apiRest.php',
+    CURLOPT_POST => 1,
+    CURLOPT_POSTFIELDS => $post_data,
+    CURLOPT_RETURNTRANSFER => 1,
+    CURLOPT_HTTPHEADER => array('Content-Type: application/json')
+];
+curl_setopt_array($ch,$options);
+$result = curl_exec($ch);
+curl_close($ch);
+echo $result;
+
+echo "toutes les températures de la période donnée ";
 
 
 
 
 
 
-$array_temp = [];
-$heure = [];
-
-// foreach($array_releves as $releves){ //on récupère toutes les températures dans une array et toutes les heures dans une autre array
-// $temperature = $releves['Temperature'];
-// $array_temp[] = $temperature;
-// $h = $releves['Date'];
-// $heure[] = substr($h,-8);
-// }
- 
-
-// if($date_debut == date("Y-m-d") And $date_fin == $date_debut){
-//     $answer = "Veuillez selectionner deux dates";
-// }elseif($date_debut != ""){
-//     $answer = "Voici le graphique des températures relevés entre le ".$date_debut." et le ".$date_fin; //phrase de synthèse
-// }
-
-
-
-// $lastDaysAvTemp = substr(averageFromArray($array_temp),0,4); //température moyenne sur la période donnée
-
-$data_sample1 = "2023-12-19";
-$data_sample2 = "2023-12-21";
-
-$data = array(
-    'date_debut'=>$data_sample1,
-    'date_fin'=>$data_sample2,
-);
-
-$options = array(
-    'http' => array(
-        'method'  => 'POST',
-        'header'  => "Content-Type: application/json",
-        'content' => json_encode($data),
-    ),
-);
-$context  = stream_context_create($options);
-
-file_get_contents('http://api.localhost:9530/apiRest.php?resource=releves_periode', false, $context);
-
-
-print_r($data);
 ?>
 
 <!DOCTYPE html>
@@ -68,49 +46,29 @@ print_r($data);
     <div class="mainTemperature">
         <div class="temperature">
             <h2>Sélectionnez une date :</h2>
-
-            <form method="get">
-            <select name="combo" >
-                    <option value="">Tout</option>
-                    <option value=""><?php echo "2023-12-19";  ?></option>
-            </select>
-            <select name="combo2" >
-                    <option value="">Tout</option>
-                    <option value=""><?php echo "2023-12-21";  ?></option>
-            </select>
-            <input type='submit' value='Afficher'>
-            </form>
-
-
-
             <form method="get">
             
-                <select name="combo1" >
-                    <option value="">Tout</option>
-                    <option value="">2023-12-21</option>
+                <select name="combo1">
+                    <option>2023-12-20</option>
+                    <option>2023-12-16</option>
+            
                     <?php
-                    $date_array = dateUniqueReverse($db,'Date');
-                    for($i=0;$i < count($date_array);$i++){
-                    echo "<option>".$date_array[$i]."</option>";
-                    }
+                    //dates uniques en reverse
+                    
                     ?>
                     <!-- Ajoutez d'autres options selon vos besoins -->
                 </select>
                 <select name="combo2" >
-                    <option value="">Tout</option>
+                    <option >2023-12-19</option>
                     <?php
-                    $date_array = dateUnique($db,'Date');
-                    for($i=0;$i < count($date_array);$i++){
-                    echo "<option>".$date_array[$i]."</option>";
-                    }
+                    //dates uniques
                     ?>
-                    <!-- Ajoutez d'autres options selon vos besoins -->
-                    
+                    <!-- Ajoutez d'autres options selon vos besoins -->   
                 </select>
                 <input type='submit' value='Afficher'>
             </form>
             <br />
-            <div id="temperature"><b><?php echo $answer;?></b></div>
+            <div id="temperature"><b><?php echo "période étudiée";?></b></div>
             <h1>Quelle température:</h1>
             <p>Jettez un oeil à la température sur la période selectionnée.</p>
 
@@ -118,51 +76,16 @@ print_r($data);
 
                 <tbody>
                     <?php
-                    $cpt = 0;
-                    for($i = 0;$i<(count($array_temp)-1);$i++){
-                        //pour tout les points
-                        $cpt++;
-                        
-                        if(count($heure)>=30){//si il y a moins de 15pts à placer
-                            if($cpt == 7){//si 2 itérations ont été faites :
-                                $point_name = "";
-                                $title_point ="";
-                                $cpt = 0;
-                            }else{
-                                $title_point = "";
-                                $point_name = "";
-                            }
 
-                        }elseif(count($heure)>=10){
-                            
-                            $title_point = "";
-                            $point_name = $array_temp[$i];
-                        }
-                        elseif(count($heure)<=10){
-                            
-                            $title_point = $heure[$i];
-                            $point_name = $array_temp[$i];
-                        }
-                        $start = "0.". (int)$array_temp[$i];
-                        $end = "0.". (int)$array_temp[$i+1];
-                        echo('
-                        <tr>
-                        <th scope = "row">'.$title_point.'</th>
-                        <td style="--start: '.$start.'; --end: '.$end.';">'.$point_name.'</td>
-                        </tr>
-                        
-                        ');
-
-                    }
 
                     ?>
                 </tbody>
             </table>
 
             <p>
-                <?php echo "La température moyenne entre ces dates est de ".$lastDaysAvTemp . "°C"; ?>.
+                <?php echo "La température moyenne entre ces dates est de "./*$lastDaysAvTemp*/ "°C"; ?>.
             </p>
-            <?php picto($lastDaysAvTemp)?>
+            <?php //picto($lastDaysAvTemp)?>
             <!-- <img src="../images/rire.svg" /> -->
         </div>
     </div>
