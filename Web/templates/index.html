@@ -19,8 +19,8 @@
 			<div class="indexIntro">
 				<h1>Quelle température et humidité aujourd’hui ?</h1>
 				<p>
-					Sélectionnez sur les des boutons ci dessous les données que vous
-					souhaitez afficher.
+					Sélectionnez une des options si dessous pour afficher une sonde ou en
+					créer une nouvelle.
 				</p>
 				<p>Les données sont actualisées toutes les heures.</p>
 			</div>
@@ -30,7 +30,7 @@
 			<div class="indexTemp">
 				<div>
 					<form action="../templates/temperature.php" method="post">
-						<button type="submit" name="temp">Afficher la température</button>
+						<button type="submit" name="temp">Sonde existante.</button>
 					</form>
 					<img src="../images/temperature.svg" alt="Icone température" />
 				</div>
@@ -40,12 +40,35 @@
 
 			<div class="indexHumid">
 				<div>
+					<button onclick="openModal()">Ajouter une nouvelle sonde</button>
+					<img src="../images/plus.svg" alt="Icone humidité" />
+				</div>
+			</div>
+
+			<!-- La modal -->
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<span class="close" onclick="closeModal()">&times;</span>
+					<h2>Nouvelle sonde.</h2>
+					<p>Voici les données de votre nouvelle sonde !</p>
+					<!-- Formulaire pour afficher l'humidité -->
 					<form action="../templates/humidite.php" method="post">
 						<button type="submit" name="humidite">Afficher l’humidité</button>
 					</form>
-					<img src="../images/humidite.svg" alt="Icone humidité" />
 				</div>
 			</div>
+
+			<script>
+				// Fonction pour ouvrir la modal
+				function openModal() {
+					document.getElementById("myModal").style.display = "block";
+				}
+
+				// Fonction pour fermer la modal
+				function closeModal() {
+					document.getElementById("myModal").style.display = "none";
+				}
+			</script>
 		</div>
 		<footer>
 			<p>&copy; 2023 Météo App</p>
