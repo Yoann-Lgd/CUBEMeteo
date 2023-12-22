@@ -1,58 +1,84 @@
 <!DOCTYPE html>
 <html lang="fr">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="../CSS/styles.css" />
-		<link rel="stylesheet" href="../CSS/charts.min.css" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/charts.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
+    <title>Météo</title>
+</head>
+<body>
+    <div class="indexMain">
+        <div class="indexIntro">
+            <h1>Quelle température et humidité aujourd’hui ?</h1>
+            <p>Sélectionnez sur les des boutons ci-dessous les données que vous souhaitez afficher.</p>
+            <p>Les données sont actualisées toutes les heures.</p>
+        </div>
 
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-			rel="stylesheet"
-		/>
-		<title>Météo</title>
-	</head>
-	<body>
-		<div class="indexMain">
-			<div class="indexIntro">
-				<h1>Quelle température et humidité aujourd’hui ?</h1>
-				<p>
-					Sélectionnez sur les des boutons ci dessous les données que vous
-					souhaitez afficher.
-				</p>
-				<p>Les données sont actualisées toutes les heures.</p>
-			</div>
+        <!-- température -->
 
-			<!-- température -->
+        <div class="indexTemp">
+            <div>
+                <form id="temperatureForm" action="../templates/temperature.php" method="post">
+                    <button type="submit" name="temp">Afficher la température</button>
+                </form>
+                <img src="../images/temperature.svg" alt="Icone température" />
+            </div>
+        </div>
 
-			<div class="indexTemp">
-				<div>
-					<form action="../templates/temperature.php" method="post">
-						<button type="submit" name="temp">Afficher la température</button>
-					</form>
-					<img src="../images/temperature.svg" alt="Icone température" />
-				</div>
-			</div>
+        <!-- humidité -->
 
-			<!-- humidité -->
+        <div class="indexHumid">
+            <div>
+                <form id="humiditeForm" action="../templates/humidite.php" method="post">
+                    <button type="submit" name="humidite">Afficher l’humidité</button>
+                </form>
+                <img src="../images/humidite.svg" alt="Icone humidité" />
+            </div>
+        </div>
+    </div>
 
-			<div class="indexHumid">
-				<div>
-					<form action="../templates/humidite.php" method="post">
-						<button type="submit" name="humidite">Afficher l’humidité</button>
-					</form>
-					<img src="../images/humidite.svg" alt="Icone humidité" />
-				</div>
-			</div>
-		</div>
+    <div class="accueil">
+        <a href="index.html"><img src="../images/maison.svg" /></a>
+    </div>
+    <footer>
+        <p>&copy; 2023 Météo App</p>
+    </footer>
+    <script>
+        // Fonction pour obtenir les paramètres de l'URL
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
 
-		<div class="accueil">
-			<a href="index.html"><img src="../images/maison.svg" /></a>
-		</div>
-		<footer>
-			<p>&copy; 2023 Météo App</p>
-		</footer>
-	</body>
+        var sondeId = getParameterByName('idSonde');
+        
+        // Ajout d'un gestionnaire d'événements sur le formulaire de température
+        var temperatureForm = document.getElementById('temperatureForm');
+        if (temperatureForm) {
+            temperatureForm.addEventListener('submit', function (event) {
+                // Empêcher l'envoi du formulaire pour qu'il puisse injecter l'id à la fin de l'url
+                event.preventDefault();
+                window.location.href = temperatureForm.action + '?idSonde=' + sondeId;
+			
+            });
+        }
+        
+        var humiditeForm = document.getElementById('humiditeForm');
+        if (humiditeForm) {
+            humiditeForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                window.location.href = humiditeForm.action + '?sondeId=' + sondeId;
+            });
+        }
+    </script>
+</body>
 </html>

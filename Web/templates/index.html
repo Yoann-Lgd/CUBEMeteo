@@ -33,6 +33,8 @@
 					<form action="../templates/choixDonnees.html" method="post">
 						<button type="submit" name="temp">Sonde existante.</button>
 					</form>
+					<!-- Utilisez une liste à la place d'une li pour contenir les sondes -->
+					<ul id="sondesList"></ul>
 					<img
 						src="../images/sonde-de-temperature-ambiante.svg"
 						alt="Icone température"
@@ -67,53 +69,49 @@
 			</div>
 
 			<script>
-				// Fonction pour ouvrir la modal
 				function openModal() {
 					document.getElementById("myModal").style.display = "block";
 				}
-
-				// Fonction pour fermer la modal
+			
 				function closeModal() {
 					document.getElementById("myModal").style.display = "none";
 				}
-
-				// Fonction pour récupérer toutes les sondes depuis l'API
+			
 				function getAllSondes() {
 					$.ajax({
 						url: "http://api.localhost:9530/apirest.php?resource=sondes",
 						method: "GET",
 						dataType: "json",
 						success: function (data) {
-							// La variable 'data' contient la réponse de l'API
-							// Mettez à jour votre page avec les données récupérées
 							if (data && data.length > 0) {
-								// Assurez-vous que la div a l'ID 'sondesList' existe dans votre HTML
-								var sondesList = document.getElementById("sondesList");
-								sondesList.innerHTML = ""; // Nettoyez le contenu précédent
-
-								// Parcourez les données et ajoutez-les à la liste
+								var sondesList = $("#sondesList");
+								sondesList.empty(); //empty() pour vider la liste
+			
 								for (var i = 0; i < data.length; i++) {
 									var sonde = data[i];
-									sondesList.innerHTML += "<li>" + sonde.nom + "</li>";
+									// append() pour ajouter des éléments à la liste
+									sondesList.append('<li class="sonde-item" data-sonde-id="' + sonde.ID + '">' + sonde.nom + '</li>');
 								}
 							} else {
 								console.log("Aucune sonde trouvée.");
 							}
+
+							$(document).on('click', '.sonde-item', function () {
+								var sondeId = $(this).data('sonde-id');
+								window.location.href = '../templates/choixDonnees.html?idSonde=' + sondeId;
+							});
 						},
 						error: function (error) {
-							console.error(
-								"Erreur lors de la récupération des sondes:",
-								error
-							);
+							console.error("Erreur lors de la récupération des sondes:", error);
 						},
 					});
 				}
-
-				// Appelez la fonction pour récupérer les sondes lors du chargement de la page
-				window.onload = function () {
-					getAllSondes();
-				};
+			
+				$(document).ready(function () {
+					getAllSondes(); 
+				});
 			</script>
+			
 		</div>
 		<footer>
 			<p>&copy; 2023 Météo App</p>

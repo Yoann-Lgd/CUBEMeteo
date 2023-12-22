@@ -48,6 +48,17 @@ function getRelevesBySonde($idSonde) {
     return $stmtReleves->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getDateUnique(){
+    global $db;
+
+    $queryReleves = "SELECT DISTINCT LEFT(Releves,10) FROM releves ORDER BY Releves ASC";
+    $stmtReleves = $db->prepare($queryReleves);
+    $stmtReleves->bindParam(':idSonde', $idSonde);
+    $stmtReleves->execute();
+
+    return $stmtReleves->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // Fonction pour récupérer les relevés entre une date de début et une date de fin pour une sonde spécifique
 function getRelevesBetweenDates($idSonde, $dateDebut, $dateFin) {
     global $db;

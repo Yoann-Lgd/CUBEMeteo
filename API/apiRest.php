@@ -16,64 +16,79 @@ require('DbConnect.php');
 // require('toolbox.php');
 
 
-// Récupérer la méthode HTTP
-// $method = $_SERVER['REQUEST_METHOD'];
+//Récupéreration la méthode HTTP
+$method = $_SERVER['REQUEST_METHOD'];
 
-// // Traiter la demande en fonction de la méthode
-// switch ($method) {  
-//     case 'GET':
-//         if (isset($_GET['resource'])) {
-//             $resource = $_GET['resource'];
-//             switch ($resource) {
-//                 case 'sondes':
-//                     $result = getAllSonde();
-//                     break;
-//                 case 'releves':
-//                     $result = getRelevesBySonde(1);
-//                     break;
-//                 case 'releves_periodes':
-//                     $result = getRelevesBetweenDates($idSonde['idSonde'], $dateDebut['date_debut'], $dateFin['date_fin']);
-//                     break;
-//                 default:
-//                     $result = ['message' => 'Ressource non trouvée'];
-//                     http_response_code(404);
-//                     break;
-//             }
-//         } else {
-//             $result = ['message' => 'Ressource non spécifiée Get'];
-//             http_response_code(400);
-//         }
-//         break;
+// Traitement la demande en fonction de la méthode
+switch ($method) {  
+    case 'GET':
+        if (isset($_GET['resource'])) {
+            $resource = $_GET['resource'];
+            switch ($resource) {
+                case 'sondes':
+                    $result = getAllSonde();
+                    break;
+                case 'releves':
+                    if (!empty($_GET['idSonde'])){
+                        $result = getRelevesBySonde($_GET['idSonde']); 
+                    } else {
+                        $result = ['message' => 'Paramètres manquants'];
+                        http_response_code(400);
+                    }
+                    break;
+                case 'releves_periode':
+                    if (!empty($_GET['idSonde']) && !empty($_GET['date_debut']) && !empty($_GET['date_fin'])) {
+                        // On récupère les valeurs passées dans l'url
+                        $idSonde = $_GET['idSonde'];
+                        $dateDebut = $_GET['date_debut'];
+                        $dateFin = $_GET['date_fin'];
 
-//         case 'POST':
-//             $data = json_decode(file_get_contents("php://input"), true);
-//             if (isset($data['resource'])) {
-//                 $resource = $data['resource'];
-//                 switch ($resource) {
-//                     case 'sonde':
-//                         $result = insertSonde($data['nom']);
-//                         var_dump($data['nom']);
-//                         break;
-//                     case 'releves':
-//                         $result = insertReleves($data['date'], $data['temperature'], $data['humidite'], $data['idSonde']);
-//                         break;
-//                     default:
-//                         $result = ['message' => 'Ressource non trouvée'];
-//                         http_response_code(404);
-//                         break;
-//                 }
-//             } else {
-//                 $result = ['message' => 'Ressource non spécifiée dans post'];
-//                 http_response_code(400);
-//             }
-//             break;
+                        $result = getRelevesBetweenDates($idSonde, $dateDebut, $dateFin);
+                    } else {
+                        $result = ['message' => 'Paramètres manquants'];
+                        http_response_code(400);
+                    }
+                    break;
+                default:
+                    $result = ['message' => 'Ressource non trouvée'];
+                    http_response_code(404);
+                    break;
+            }
+        } else {
+            $result = ['message' => 'Ressource non spécifiée Get'];
+            http_response_code(400);
+        }
+        break;
 
-//         default:
-//             $result = ['message' => 'Méthode non autorisée'];
-//             http_response_code(405);
-//             break;
-// }
-// echo json_encode($result);
+        case 'POST':
+            $data = json_decode(file_get_contents("php://input"), true);
+            if (isset($data['resource'])) {
+                $resource = $data['resource'];
+                switch ($resource) {
+                    case 'sonde':
+                        $result = insertSonde($data['nom']);
+                        var_dump($data['nom']);
+                        break;
+                    case 'releves':
+                        $result = insertReleves($data['date'], $data['temperature'], $data['humidite'], $data['idSonde']);
+                        break;
+                    default:
+                        $result = ['message' => 'Ressource non trouvée'];
+                        http_response_code(404);
+                        break;
+                }
+            } else {
+                $result = ['message' => 'Ressource non spécifiée dans post'];
+                http_response_code(400);
+            }
+            break;
+
+        default:
+            $result = ['message' => 'Méthode non autorisée'];
+            http_response_code(405);
+            break;
+}
+echo json_encode($result);
 
 
 
@@ -141,10 +156,9 @@ require('DbConnect.php');
 function dateUniqueReverse($BDD,$Table){
     //retourne la liste des dates uniques d'une table dans l'ordre décroissant
     $date_array = [];
-    $cursor = $BDD->query("SELECT DISTINCT LEFT($Table,10) FROM releves ORDER BY $Table ASC");
-    $data_extract = $cursor->fetchAll(PDO::FETCH_ASSOC);
-    for($i = 0;$i < count($data_extract);$i++){
-        $date_array[] = $data_extract[$i]["LEFT(Date,10)"];
+    $data = getDateUnique();
+    for($i = 0;$i < count($data);$i++){
+        $date_array[] = $data[$i]["LEFT(Date,10)"];
     }
     return $date_array;
 }
@@ -152,10 +166,9 @@ function dateUniqueReverse($BDD,$Table){
 function dateUnique($BDD,$Table){
     //retourne la liste des dates uniques d'une table dans l'ordre décroissant
     $date_array = [];
-    $cursor = $BDD->query("SELECT DISTINCT LEFT($Table,10) FROM releves ORDER BY $Table DESC");
-    $data_extract = $cursor->fetchAll(PDO::FETCH_ASSOC);
-    for($i = 0;$i < count($data_extract);$i++){
-        $date_array[] = $data_extract[$i]["LEFT(Date,10)"];
+    $data = getDateUnique();
+    for($i = 0;$i < count($data);$i++){
+        $date_array[] = $data[$i]["LEFT(Date,10)"];
     }
     return $date_array;
 }
@@ -221,11 +234,11 @@ function extractTemp($releves){
 }
 
 
-$form_data = file_get_contents('php://input');
-    $data = (array)json_decode($form_data,true);
-    $date_debut = $data['date_debut'];
-    $date_fin = $data['date_fin'];
-    $res = getRelevesBetweenDates('1',$date_debut,$date_fin);
-    $list_res = extractTemp($res);
-    print_r($list_res);
+// $form_data = file_get_contents('php://input');
+//     $data = (array)json_decode($form_data,true);
+//     $date_debut = $data['date_debut'];
+//     $date_fin = $data['date_fin'];
+//     $res = getRelevesBetweenDates('1',$date_debut,$date_fin);
+//     $list_res = extractTemp($res);
+//     print_r($list_res);
     
