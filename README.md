@@ -24,6 +24,21 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 ### 2. Configuration de l'environnement
 
 - Lancez XAMPP/MAMP et démarrez les services Apache et MySQL.
+- Cnfiguration du server en intégrant ces lignes ci-dessous à la fin du fichier httpd.conf (dans dossier apache de MAMP/XAMPP)
+
+//////
+CODE => Listen 9530
+<VirtualHost *:9530>
+    DocumentRoot "/Applications/MAMP/htdocs/API/"
+    ServerName api.local
+
+    <Directory "/Applications/MAMP/htdocs/API/">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+/////
 
 ### 3. Téléchargement du code source
 
@@ -44,6 +59,7 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 
 - Lancez XAMPP/MAMP si ce n'est pas déjà fait.
 - Utilisez un navigateur web pour accéder à l'URL de l'API, par exemple : `http://localhost/votreapi/v1/meteo?id=unique_id` en remplaçant `unique_id` par l'identifiant unique de la sonde pour obtenir les données météo associées.
+
 
 ## Utilisation de l'API
 
