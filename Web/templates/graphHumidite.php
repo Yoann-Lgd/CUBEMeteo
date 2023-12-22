@@ -99,14 +99,14 @@ $date_array = recentDate();
             
 
 
-            <table class="charts-css line hide-data show-labels show-primary-axis"><caption>Température comparées</caption> 
+            <table class="charts-css line hide-data show-labels show-primary-axis"><caption>Humidté comparées</caption> 
             <thead>
 	<tr>
 		<th>
 			Temps
 		</th>
 		<th>
-			Degrés
+			Pourcentage
 		</th>
 	</tr>
 </thead>
