@@ -1,84 +1,34 @@
 <?php
 include_once('toolbox.php');
-///
 
-
-$date_debut = $_GET['combo1'];
-$date_fin = $_GET['combo2'];
+$date_debut = isset($_GET['date_debut']) ? $_GET['date_debut'] : '';
+$date_fin = isset($_GET['date_fin']) ? $_GET['date_fin'] : '';
 
 if (isset($_GET['idSonde'])) {
     $idSonde = $_GET['idSonde'];
 } else {
     echo "Aucun ID n'a été spécifié dans l'URL.";
 }
-$idSondeUrl = $idSonde;
-$apiUrlRelevesSonde = 'http://api.localhost:9530/apiRest.php?resource=releves_periode&idSonde=' . $idSondeUrl.'&date_debut='.$date_debut.'&date_fin='.$date_fin;
-$ch = curl_init($apiUrlRelevesSonde);
 
-$options = [
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
-];
-
-curl_setopt_array($ch, $options);
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-$data = json_decode($response, true);
-
-//////
-
-// echo "Données récupérées : <pre>";
-// print_r($data);
-// echo "</pre>";
-echo $data;
-
-
-
-// $post_data = json_encode($data = [
-//     'date_debut' => $date_debut,
-//     'date_fin' => $date_fin,
-// ]);
-// $ch = curl_init();
-
-// $options = [
-//     // CURLOPT_URL => 'http://api.localhost:9530/apiRest.php?resource=releves_periode&idSonde=' . $idSondeUrl.'&date_debut='.$date_debut.'&date_fin='.$date_fin,
-//     CURLOPT_URL => 'http://api.localhost:9530/apiRest.php?resource=releves_periode&idSonde=1&date_debut=2023-12-16&date_fin=2023-12-19',
-//     CURLOPT_POST => 1,
-//     CURLOPT_POSTFIELDS => $post_data,
-//     CURLOPT_RETURNTRANSFER => 1,
-//     CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
-// ];
-// curl_setopt_array($ch, $options);
-// $result = curl_exec($ch);
-// curl_close($ch);
-// $data = json_decode($result,true);
-// print_r($data);
-
-
-echo "Toutes les températures de la période donnée ";
-
-function recentDate(){
+function recentDate() {
     $day = date('d');
     $today = date("Y-m-d");
     $response = [];
     $response[] = $today;
-    for($i=1;$i<=4;$i++){
-        $ajout = date('Y-m-'.$day-$i);
+    for ($i = 1; $i <= 4; $i++) {
+        $ajout = date('Y-m-d', strtotime("-$i days"));
         $response[] = $ajout;
     }
     return $response;
 }
 
-function displayArray($array){
-    for($i=0;$i<count($array);$i++){
-        echo '<option>'.$array[$i].'</option>';
+function displayArray($array) {
+    for ($i = 0; $i < count($array); $i++) {
+        echo '<option>' . $array[$i] . '</option>';
     }
 }
 
 $date_array = recentDate();
-
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +40,10 @@ $date_array = recentDate();
     <link rel="stylesheet" href="../CSS/styles.css" />
     <link rel="stylesheet" href="../CSS/charts.min.css" />
     <title>Température</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
 </head>
 
 <body>
@@ -97,44 +51,104 @@ $date_array = recentDate();
         <div class="temperature">
             <h2>Sélectionnez une date :</h2>
             <form method="get">
-                <select name="combo1">
-                    
+                <input type="hidden" name="idSonde" value="<?php echo $idSonde; ?>">
+                <select name="date_debut">
                     <?php displayArray(array_reverse($date_array)) ?>
-                    <!-- Ajoutez d'autres options selon vos besoins -->
                 </select>
-                <select name="combo2">
+                <select name="date_fin">
                     <?php displayArray($date_array) ?>
-                    <!-- Ajoutez d'autres options selon vos besoins -->
                 </select>
-                <input type="hidden" name="idSonde" value="1">
-                <input type='submit' value='Afficher'>
+                <input type='submit' value='Afficher' id="afficherBtn">
             </form>
+
             <br />
-            <div id="temperature"><p><?php echo "Période de ".$date_debut." à ".$date_fin; ?></p></div>
+            <div id="temperature"><p><?php echo "Période de " . $date_debut . " à " . $date_fin; ?></p></div>
             <h1>Quelle température:</h1>
-            <p>Jetez un oeil à la température sur la période selectionnée.</p>
+            <p>Jetez un œil à la température sur la période sélectionnée.</p>
 
-            
-            <form method="get" action="http://api.localhost:9530/apirest.php">
-                <input type="hidden" name="resource" value="releves">
-                <input type="hidden" name="idSonde" value="1">
-                <input type="submit" value="Afficher le graphique">
-            </form>
-
-
-            <table class="charts-css line show-primary-axis show-10-secondary-axes  show-labels  show-heading">
-                <tbody>
-                    <?php
-
-                    ?>
-                </tbody>
-            </table>
+            <!-- Ajoutez un canvas pour le graphique -->
+            <canvas id="myChart" width="400" height="400"></canvas>
         </div>
     </div>
 
     <div class="accueil">
         <a href="index.html"><img src="../images/maison.svg" /></a>
     </div>
+
+    <script>
+ $(document).ready(function () {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart;
+
+    function updateTable() {
+        var idSonde = $("input[name='idSonde']").val();
+        var date_debut = $("select[name='date_debut']").val();
+        var date_fin = $("select[name='date_fin']").val();
+
+        console.log("ID Sonde:", idSonde);
+        console.log("Date début:", date_debut);
+        console.log("Date fin:", date_fin);
+
+        $.getJSON("http://api.localhost:9530/apirest.php", {
+            resource: "releves_periode",
+            idSonde: idSonde,
+            date_debut: date_debut,
+            date_fin: date_fin
+        }, function (data) {
+            console.log(idSonde, date_debut, date_fin);
+            // Extract data from JSON and format it for Chart.js
+            var labels = data.map(function (entry) {
+                return entry.Date;
+            });
+
+            var temperatures = data.map(function (entry) {
+                return entry.Temperature;
+            });
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Température',
+                        data: temperatures,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                                parser: 'YYYY-MM-DD HH:mm:ss',
+                                tooltipFormat: 'll HH:mm:ss'
+                            }
+                        }],
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    }
+
+    $("#afficherBtn").click(function (e) {
+        e.preventDefault();
+        updateTable();
+    });
+
+    updateTable();
+});
+    </script>
+
 </body>
 
 </html>

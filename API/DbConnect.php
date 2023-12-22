@@ -1,7 +1,7 @@
 <?php
 
 try {
-    $db = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', '');
+    $db = new PDO('mysql:host=localhost;dbname=cube_meteo', 'root', 'root');
 } catch (PDOException $erreur) {
     echo 'Echec de la connexion suite à l\'erreur suivante : ' . $erreur->getMessage();
     exit;
