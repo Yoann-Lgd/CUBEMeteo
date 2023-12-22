@@ -38,6 +38,7 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 ### 5. Importation des données
 
 - Importez les données météo fournies dans le dossier `BDD` du code source dans la base de données `meteo_db` que vous venez de créer.
+-L'importation de données peut-être gérée si on le veut par un script rédigé par nos soins présent dans RelevesDAO.php et SondeDAO.php au lieu de relier un respberry physiquement ou de l'émuler.
 
 ### 6. Test de l'API
 
@@ -49,11 +50,11 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 ### Endpoint
 
 - L'endpoint de l'API est `/v1/meteo`.
-- Le paramètre `id` est obligatoire et correspond à l'identifiant unique de la sonde.
+- Le paramètre `idSonde` est obligatoire et correspond à l'identifiant unique de la sonde.
 
 ### Exemple d'appel
 
-GET /v1/meteo?id=123456
+GET /v1/meteo?idSonde=123456
 
 ### Réponses possibles
 
@@ -61,7 +62,7 @@ GET /v1/meteo?id=123456
 
 ```json
 {
-	"ID": "Sonde 123456",
+	"IdSonde": "Sonde 123456",
 	"temperature": 22,
 	"humidity": 60
 }
