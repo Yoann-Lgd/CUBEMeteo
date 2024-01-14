@@ -26,7 +26,7 @@ require('DbConnect.php');
         return $sondeStmt->fetchAll(PDO::FETCH_ASSOC);
     }
         
-    // Fonction pour récupérer la sonde selon son id
+    // Fonction pour récupérer les informations propres à la table sonde selon son id
     function getSondeById($idSonde) {
         global $db;
 
@@ -46,7 +46,18 @@ require('DbConnect.php');
         $stmt = $db->prepare($query);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':id', $id);
+        $result = $stmt->execute();
 
+        return $result;
+    }
+
+    //Fonction pour supprimer une sonde en passant son id en paramètre de celle-ci
+    function deleteSondeById($id) {
+        global $db;
+
+        $query = "DELETE FROM Sonde WHERE ID = :id";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':id', $id);
         $result = $stmt->execute();
 
         return $result;

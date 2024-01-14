@@ -24,7 +24,7 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 ### 2. Configuration de l'environnement
 
 - Lancez XAMPP/MAMP et démarrez les services Apache et MySQL.
-- Cnfiguration du server en intégrant ces lignes ci-dessous à la fin du fichier httpd.conf (dans dossier apache de MAMP/XAMPP)
+- Configuration du server en intégrant ces lignes ci-dessous à la fin du fichier httpd.conf (dans dossier apache de MAMP/XAMPP)
 
 //////
 CODE => Listen 9530
@@ -53,20 +53,25 @@ CODE => Listen 9530
 ### 5. Importation des données
 
 - Importez les données météo fournies dans le dossier `BDD` du code source dans la base de données `meteo_db` que vous venez de créer.
--L'importation de données peut-être gérée si on le veut par un script rédigé par nos soins présent dans RelevesDAO.php et SondeDAO.php au lieu de relier un respberry physiquement ou de l'émuler.
+-   L'importation de données peut-être gérée si on le veut par un script rédigé par nos soins présent dans RelevesDAO.php et SondeDAO.php au lieu de relier un respberry physiquement ou de l'émuler.
 
 ### 6. Test de l'API
 
 - Lancez XAMPP/MAMP si ce n'est pas déjà fait.
-- Utilisez un navigateur web pour accéder à l'URL de l'API, par exemple : `http://localhost/votreapi/v1/meteo?id=unique_id` en remplaçant `unique_id` par l'identifiant unique de la sonde pour obtenir les données météo associées.
-
+- Pour tester l'API : vous pouvez le faire directement via votre navigateur web en spécifiant dans la barre de recherche cet url : http://api.localhost:9530/apirest.php?resource=sondes par exemple. Vous allez alors obtenir toutes les sondes enregistrées dans la base de données. Vous pouvez également le faire depuis une plateforme / site qui teste les api comme PostMan.
 
 ## Utilisation de l'API
 
-### Endpoint
+### Endpoints
+- Quand il y a la présence du caractère ":" dans l'url il faut le remplacer par les     valeurs adéquates (ex: par l'id d'une sonde présente, les dates au formats YYYY-MM-DD)
+- Endpoints GET 
+    - http://api.localhost:9530/apirest.php?resource=sondes
+    - http://api.localhost:9530/apirest.php?resource=releves&idSonde=:idSonde
+    - http://api.localhost:9530/apirest.php?resource=releves_periode&idSonde=:idSonde&date_debut=:YYYY-MM-DD&date_fin=:YYYY-MM-DD
 
-- L'endpoint de l'API est `/v1/meteo`.
-- Le paramètre `idSonde` est obligatoire et correspond à l'identifiant unique de la sonde.
+- Enpoints PUT / POST
+    - http://api.localhost:9530/apirest.php?resource=sonde
+    - http://api.localhost:9530/apirest.php?resource=releves
 
 ### Exemple d'appel
 

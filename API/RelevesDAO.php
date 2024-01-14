@@ -3,7 +3,7 @@
 require('DbConnect.php');
 
 
-
+//Insertion des relevés en recevant 4 paramètre : la date, la température, l'humidité et l'id de la sonde concernée
 function insertReleves($date, $temperature, $humidite, $idSonde) {
     global $db;
 
@@ -24,10 +24,10 @@ function insertReleves($date, $temperature, $humidite, $idSonde) {
 
 }
 
+//Fonction qui a pour but de fournir toutes les informations d'un relevé par le biais de son id passé en paramètre
 function getRelevesByID($idReleves) {
     global $db;
 
-    
     $queryReleves = "SELECT * FROM Releves WHERE ID = :idReleves";
     $stmtReleves = $db->prepare($queryReleves);
     $stmtReleves->bindParam(':idReleves', $idReleves);
@@ -36,22 +36,12 @@ function getRelevesByID($idReleves) {
     return $stmtReleves->fetch(PDO::FETCH_ASSOC);
 }
 
+//Fonction qui a pour but de fournir toutes les relevés d'une sonde selectionnée par son id 
 function getRelevesBySonde($idSonde) {
     global $db;
 
     
     $queryReleves = "SELECT * FROM Releves WHERE ID_Sonde = :idSonde";
-    $stmtReleves = $db->prepare($queryReleves);
-    $stmtReleves->bindParam(':idSonde', $idSonde);
-    $stmtReleves->execute();
-
-    return $stmtReleves->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function getDateUnique(){
-    global $db;
-
-    $queryReleves = "SELECT DISTINCT LEFT(Releves,10) FROM releves ORDER BY Releves ASC";
     $stmtReleves = $db->prepare($queryReleves);
     $stmtReleves->bindParam(':idSonde', $idSonde);
     $stmtReleves->execute();
@@ -74,6 +64,17 @@ function getRelevesBetweenDates($idSonde, $dateDebut, $dateFin) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+
+//Fonction qui a pour but de fournir les relevés 
+// function getDateUnique(){
+//     global $db;
+
+//     $queryReleves = "SELECT DISTINCT LEFT(Releves,10) FROM releves ORDER BY Releves ASC";
+//     $stmtReleves = $db->prepare($queryReleves);
+//     $stmtReleves->execute();
+
+//     return $stmtReleves->fetchAll(PDO::FETCH_ASSOC);
+// }
 // // Exemple d'utilisation
 // $idSonde = 1; // ID de la sonde
 // $dateDebut = '2023-12-17 00:00:00'; // Date de début
