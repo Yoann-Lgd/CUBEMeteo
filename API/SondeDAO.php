@@ -51,15 +51,31 @@ require('DbConnect.php');
         return $result;
     }
 
-    //Fonction pour supprimer une sonde en passant son id en paramètre de celle-ci
+    //Fonction pour supprimer une sonde en passant son id en paramètre de celle-ci, on supprime d'abord tous les relevés liés à la sonde pour éviter les erreurs liées à 
+    // une violation de contrainte de données lié à la FK présente dans la table Releves
     function deleteSondeById($id) {
         global $db;
 
-        $query = "DELETE FROM Sonde WHERE ID = :id";
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $result = $stmt->execute();
+        // on vérifie si des relevés liés à la sonde selectionnée existe dans la table Releves
+        $checkQuery = "SELECT COUNT(*) as count FROM Releves WHERE ID_Sonde = :id";
+        $checkStmt = $db->prepare($checkQuery);
+        $checkStmt->bindParam(':id', $id);
+        $checkStmt->execute();
+        $rowCount = $checkStmt->fetch(PDO::FETCH_ASSOC)['count'];
+
+        // Si des relevées existent, on supprime tous les relevés liés à 
+        if ($rowCount > 0) {
+            $deleteRelevesQuery = "DELETE FROM Releves WHERE ID_Sonde = :id";
+            $deleteRelevesStmt = $db->prepare($deleteRelevesQuery);
+            $deleteRelevesStmt->bindParam(':id', $id);
+            $deleteRelevesStmt->execute();
+        }
+
+        // Suppresion de la sonde
+        $deleteSondeQuery = "DELETE FROM Sonde WHERE ID = :id";
+        $deleteSondeStmt = $db->prepare($deleteSondeQuery);
+        $deleteSondeStmt->bindParam(':id', $id);
+        $result = $deleteSondeStmt->execute();
 
         return $result;
     }
-

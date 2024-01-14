@@ -22,15 +22,15 @@ switch ($method) {
         if (isset($_GET['resource'])) {
             $resource = $_GET['resource'];
             switch ($resource) {
-                // http://api.localhost:9530/apirest.php?resource=sonde?idSonde=:id
-                case 'sonde';
-                if (!empty($_GET['idSonde'])) {
-                    $result = getSondeById($_GET['idSonde']);
-                } else {
-                    $result = ['message' => 'Paramètres manquants'];
-                    http_response_code(400);
-                }
-                break;
+                // http://api.localhost:9530/apirest.php?resource=sonde&idSonde=:id
+                case 'sonde':
+                    if (!empty($_GET['idSonde'])) {
+                        $result = getSondeById($_GET['idSonde']);
+                    } else {
+                        $result = ['message' => 'Paramètres manquants'];
+                        http_response_code(400);
+                    }
+                    break;
                 // http://api.localhost:9530/apirest.php?resource=sondes
                 case 'sondes':
                     $result = getAllSonde();
