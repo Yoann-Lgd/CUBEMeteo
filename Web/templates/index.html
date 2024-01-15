@@ -57,11 +57,11 @@
 					<h2>Nouvelle sonde.</h2>
 					<p>Voici les données de votre nouvelle sonde !</p>
 					<!-- Formulaire pour afficher l'humidité -->
-					<form action="../templates/humidite.php" method="post">
-						<label for="fname">Nom de la nouvelle sonde:</label><br />
-						<input type="text" id="fname" name="fname" /><br />
+					<form id="myForm">
+						<label for="nom">Nom de la nouvelle sonde:</label>
+						<input type="text" id="fname" name="nom" /><br />
 						<div class="valideAnnul">
-							<button type="submit" name="Valide">Créer</button>
+							<button type="button" onclick="submitForm()">Créer</button>
 							<span class="close" onclick="closeModal()">Annuler</span>
 						</div>
 					</form>
@@ -104,6 +104,37 @@
 						error: function (error) {
 							console.error("Erreur lors de la récupération des sondes:", error);
 						},
+					});
+				}
+
+				function submitForm() {
+					var form = document.getElementById('myForm');
+					var formData = new FormData(form);
+					var jsonData = {};
+
+					formData.forEach(function(value, key){
+						jsonData[key] = value;
+					});
+
+					fetch('http://localhost:9530/apirest.php?sonde', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(jsonData),
+					})
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('Erreur de la réponse');
+						}
+						return response.json();
+					})
+					.then(data => {
+						console.log(data);
+						window.location.reload();
+					})
+					.catch(error => {
+						console.error('Il y a un problème avec l opération fetch', error);
 					});
 				}
 			

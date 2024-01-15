@@ -76,77 +76,77 @@ $date_array = recentDate();
     </div>
 
     <script>
- $(document).ready(function () {
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart;
+        $(document).ready(function () {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart;
 
-    function updateTable() {
-        var idSonde = $("input[name='idSonde']").val();
-        var date_debut = $("select[name='date_debut']").val();
-        var date_fin = $("select[name='date_fin']").val();
+            function updateTable() {
+                var idSonde = $("input[name='idSonde']").val();
+                var date_debut = $("select[name='date_debut']").val();
+                var date_fin = $("select[name='date_fin']").val();
 
-        console.log("ID Sonde:", idSonde);
-        console.log("Date début:", date_debut);
-        console.log("Date fin:", date_fin);
+                console.log("ID Sonde:", idSonde);
+                console.log("Date début:", date_debut);
+                console.log("Date fin:", date_fin);
 
-        $.getJSON("http://api.localhost:9530/apirest.php", {
-            resource: "releves_periode",
-            idSonde: idSonde,
-            date_debut: date_debut,
-            date_fin: date_fin
-        }, function (data) {
-            console.log(idSonde, date_debut, date_fin);
-            // Extract data from JSON and format it for Chart.js
-            var labels = data.map(function (entry) {
-                return entry.Date;
-            });
+                $.getJSON("http://api.localhost:9530/apirest.php", {
+                    resource: "releves_periode",
+                    idSonde: idSonde,
+                    date_debut: date_debut,
+                    date_fin: date_fin
+                }, function (data) {
+                    console.log(idSonde, date_debut, date_fin);
+                    // Extract data from JSON and format it for Chart.js
+                    var labels = data.map(function (entry) {
+                        return entry.Date;
+                    });
 
-            var humidite = data.map(function (entry) {
-                return entry.Humidite;
-            });
+                    var humidite = data.map(function (entry) {
+                        return entry.Humidite;
+                    });
 
-            if (myChart) {
-                myChart.destroy();
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Humidité',
+                                data: humidite,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day',
+                                        parser: 'YYYY-MM-DD HH:mm:ss',
+                                        tooltipFormat: 'll HH:mm:ss'
+                                    }
+                                }],
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
             }
 
-            myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Humidité',
-                        data: humidite,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            type: 'time',
-                            time: {
-                                unit: 'day',
-                                parser: 'YYYY-MM-DD HH:mm:ss',
-                                tooltipFormat: 'll HH:mm:ss'
-                            }
-                        }],
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
+            $("#afficherBtn").click(function (e) {
+                e.preventDefault();
+                updateTable();
             });
+
+            updateTable();
         });
-    }
-
-    $("#afficherBtn").click(function (e) {
-        e.preventDefault();
-        updateTable();
-    });
-
-    updateTable();
-});
     </script>
 
 </body>
